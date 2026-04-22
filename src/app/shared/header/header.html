@@ -1,0 +1,14 @@
+<header class="site-header">
+	<div class="brand-block">
+		<p class="eyebrow">Tesi magistrale</p>
+		<a class="brand-title" routerLink="/">Museo Accessibilita</a>
+		<p class="brand-copy">Sito museo Angular per analizzare e migliorare l'accessibilita dei componenti.</p>
+	</div>
+
+	<nav aria-label="Navigazione principale" class="site-nav">
+		<a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+		<a routerLink="/collezione" routerLinkActive="is-active">Collezione</a>
+		<a routerLink="/biglietti" routerLinkActive="is-active">Biglietti</a>
+		<a routerLink="/contatti" routerLinkActive="is-active">Contatti</a>
+	</nav>
+</header>

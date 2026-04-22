@@ -1,0 +1,52 @@
+.hero h1 {
+	margin: 0 0 1rem;
+	font-size: clamp(2rem, 5vw, 4.5rem);
+	line-height: 0.95;
+}
+
+.hero p:last-child {
+	max-width: 52rem;
+	font-size: 1.1rem;
+	line-height: 1.7;
+}
+
+.section-label {
+	margin: 0 0 1rem;
+	color: var(--color-accent);
+	font-family: Arial, sans-serif;
+	font-size: 0.85rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.page-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.page-card {
+	padding: 1.5rem;
+	border: 1px solid var(--color-border);
+	border-radius: 1.25rem;
+	background: var(--color-surface);
+	box-shadow: var(--shadow-soft);
+}
+
+.page-card h2 {
+	margin-top: 0;
+}
+
+.page-card p {
+	margin-bottom: 0;
+	color: var(--color-muted);
+	line-height: 1.7;
+}
+
+@media (max-width: 820px) {
+	.page-grid {
+		grid-template-columns: 1fr;
+	}
+}

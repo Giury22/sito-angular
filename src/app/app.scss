@@ -1,59 +1,59 @@
 :host {
-	--color-bg: #f6f1e8;
-	--color-surface: #fffaf3;
-	--color-text: #1f1b16;
-	--color-muted: #5c5145;
-	--color-border: #d9c8af;
-	--color-accent: #0f5c5c;
-	--color-accent-strong: #0a4343;
-	--shadow-soft: 0 18px 40px rgba(68, 46, 24, 0.08);
-	box-sizing: border-box;
-	color: var(--color-text);
-	display: block;
-	font-family: Georgia, 'Times New Roman', serif;
-	min-height: 100dvh;
-	background:
-		radial-gradient(circle at top, rgba(214, 186, 140, 0.28), transparent 32%),
-		linear-gradient(180deg, #f4eee4 0%, var(--color-bg) 100%);
+  --color-bg: #f6f1e8;
+  --color-surface: #fffaf3;
+  --color-text: #1f1b16;
+  --color-muted: #5c5145;
+  --color-border: #d9c8af;
+  --color-accent: #0f5c5c;
+  --color-accent-strong: #0a4343;
+  --shadow-soft: 0 18px 40px rgba(68, 46, 24, 0.08);
+  box-sizing: border-box;
+  color: var(--color-text);
+  display: block;
+  font-family: Georgia, 'Times New Roman', serif;
+  min-height: 100dvh;
+  background:
+    radial-gradient(circle at top, rgba(214, 186, 140, 0.28), transparent 32%),
+    linear-gradient(180deg, #f4eee4 0%, var(--color-bg) 100%);
 }
 
 :host *,
 :host *::before,
 :host *::after {
-	box-sizing: inherit;
+  box-sizing: inherit;
 }
 
 .skip-link {
-	position: absolute;
-	left: 1rem;
-	top: -3rem;
-	background: var(--color-accent-strong);
-	color: #fff;
-	padding: 0.75rem 1rem;
-	border-radius: 0.5rem;
-	text-decoration: none;
-	z-index: 10;
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  background: var(--color-accent-strong);
+  color: #fff;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  z-index: 10;
 }
 
 .skip-link:focus {
-	top: 1rem;
+  top: 1rem;
 }
 
 .app-shell {
-	min-height: 100dvh;
-	display: grid;
-	grid-template-rows: auto 1fr auto;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 .app-main {
-	width: min(1120px, calc(100% - 2rem));
-	margin: 0 auto;
-	padding: 2rem 0 4rem;
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
 }
 
 @media (max-width: 720px) {
-	.app-main {
-		width: min(100%, calc(100% - 1rem));
-		padding: 1rem 0 3rem;
-	}
+  .app-main {
+    width: min(100%, calc(100% - 1rem));
+    padding: 1rem 0 3rem;
+  }
 }

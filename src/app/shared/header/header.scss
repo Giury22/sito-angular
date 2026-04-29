@@ -1,67 +1,220 @@
+/* HEADER */
 .site-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* BARRA SUPERIORE */
+.header-bar {
   display: flex;
   justify-content: space-between;
-  align-items: end;
-  gap: 2rem;
-  padding: 2rem 0 1.5rem;
-  border-bottom: 1px solid var(--color-border);
+  align-items: center;
+  padding: 1rem 1.25rem;
 }
 
-.brand-block {
-  max-width: 38rem;
-}
-
-.eyebrow {
-  margin: 0 0 0.4rem;
-  color: var(--color-accent);
-  font-family: Arial, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.brand-title {
-  color: var(--color-text);
+/* LOGO */
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  margin-right: auto;
   text-decoration: none;
-  font-size: clamp(2rem, 4vw, 3.2rem);
-  line-height: 1;
 }
 
-.brand-copy {
-  margin: 0.75rem 0 0;
-  color: var(--color-muted);
+/* IMMAGINE DEL LOGO */
+.logo-img {
+  border-radius: 50%;
+  display: block;
+  height: 64px;
+  object-fit: cover;
+  width: 64px;
+}
+
+/* NOME DEL MUSEO */
+.brand-name {
+  color: var(--color-text);
+  font-family: Georgia, serif;
   font-size: 1rem;
-  line-height: 1.6;
+  font-weight: 700;
+  margin-left: 0.75rem;
 }
 
-.site-nav {
+/* CONTROLLI DESTRA: raggruppano select lingua e hamburger */
+.header-controls {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 0.75rem;
 }
 
-.site-nav a {
-  color: var(--color-text);
-  text-decoration: none;
-  padding: 0.75rem 1rem;
+/* SELETTORE LINGUA: contenitore dei due pulsanti IT/EN */
+.lang-switcher {
+  display: flex;
   border: 1px solid var(--color-border);
   border-radius: 999px;
-  background: rgba(255, 250, 243, 0.9);
-  font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
-.site-nav a:hover,
-.site-nav a:focus-visible,
-.site-nav a.is-active {
+/* Su mobile: visibile nella barra superiore */
+.lang-switcher--desktop {
+  display: none;
+}
+
+/* SINGOLO PULSANTE LINGUA */
+.lang-btn {
+  background: none;
+  border: none;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.65rem;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+/* LINGUA ATTIVA: sfondo scuro come i link di navigazione */
+.lang-btn.lang-active {
   background: var(--color-accent);
-  border-color: var(--color-accent);
   color: #fff;
 }
 
-@media (max-width: 820px) {
+/* PULSANTE HAMBURGER */
+.hamburger {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 0.4rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0.5rem 0.6rem;
+}
+
+/* ICONA HAMBURGER: tre linee orizzontali */
+.hamburger-line {
+  background: var(--color-text);
+  border-radius: 2px;
+  display: block;
+  height: 2px;
+  width: 22px;
+}
+
+/* NAVBAR: nascosta su mobile, visibile quando aggiunta la classe .is-open */
+.site-nav {
+  display: none;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 1.25rem 1.25rem;
+}
+
+.site-nav.is-open {
+  display: flex;
+}
+
+/* LINK DI NAVIGAZIONE */
+.site-nav a {
+  border-radius: 0.5rem;
+  color: var(--color-text);
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  background: var(--color-bg);
+}
+
+/* LINK ATTIVO: evidenzia la pagina corrente */
+.site-nav a.is-active {
+  background: var(--color-accent);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  /* HEADER orizzontale su desktop */
   .site-header {
-    flex-direction: column;
-    align-items: start;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2rem;
+  }
+
+  .header-bar {
+    padding: 1rem 0;
+  }
+
+  /* PULSANTE HAMBURGER: nascosto su desktop */
+  .hamburger {
+    display: none;
+  }
+
+  /* SELETTORE LINGUA: nascosto nella barra superiore, visibile nella nav */
+  .lang-switcher--mobile {
+    display: none;
+  }
+
+  .lang-switcher--desktop {
+    display: flex;
+    margin-left: 0.5rem;
+    border-left: 1px solid var(--color-border);
+    border-radius: 0;
+    padding-left: 1rem;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    overflow: visible;
+  }
+
+  .lang-switcher--desktop .lang-btn {
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    padding: 0.6rem 0.8rem;
+  }
+
+  .lang-switcher--desktop .lang-btn:first-child {
+    border-radius: 999px 0 0 999px;
+    border-right: none;
+  }
+
+  .lang-switcher--desktop .lang-btn:last-child {
+    border-radius: 0 999px 999px 0;
+  }
+
+  /* NAVBAR: sempre visibile e orizzontale su desktop */
+  .site-nav {
+    display: flex !important;
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 0;
+    align-items: center;
+  }
+
+  /* LINK DI NAVIGAZIONE: stile pill su desktop */
+  .site-nav a {
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: rgba(255, 250, 243, 0.9);
+    padding: 0.6rem 1.1rem;
+  }
+
+  .site-nav a:hover,
+  .site-nav a:focus-visible {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
+  }
+
+  .site-nav a.is-active {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #fff;
   }
 }

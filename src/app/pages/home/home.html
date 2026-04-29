@@ -1,28 +1,24 @@
+<!-- HERO -->
 <section class="page-card hero">
-  <p class="section-label">Homepage</p>
-  <h1>Un museo digitale progettato per essere analizzato e migliorato.</h1>
-  <p>
-    Questo prototipo nasce per valutare la qualita dell'accessibilita in Angular, individuare
-    criticita nei componenti e documentare gli interventi necessari per avvicinarsi il piu possibile
-    ai criteri WCAG.
-  </p>
+  <p class="section-label">{{ lang.t().home.eyebrow }}</p>
+  <h1>{{ lang.t().home.hero }}</h1>
+  <p>{{ lang.t().home.description }}</p>
 </section>
 
-<section class="page-grid" aria-label="Sezioni principali del sito">
+<!-- GRIGLIA CARD -->
+<section class="page-grid" [attr.aria-label]="lang.t().home.gridLabel">
   <article class="page-card">
-    <h2>Collezione</h2>
-    <p>
-      Presenta opere, schede descrittive, alternative testuali e gerarchia semantica dei contenuti.
-    </p>
+    <h2>{{ lang.t().home.cardCollezione }}</h2>
+    <p>{{ lang.t().home.cardCollezioneDesc }}</p>
   </article>
 
   <article class="page-card">
-    <h2>Biglietti</h2>
-    <p>Area utile per studiare form, pulsanti, feedback e navigazione da tastiera.</p>
+    <h2>{{ lang.t().home.cardBiglietti }}</h2>
+    <p>{{ lang.t().home.cardBigliettiDesc }}</p>
   </article>
 
   <article class="page-card">
-    <h2>Contatti</h2>
-    <p>Spazio per testare campi etichettati, istruzioni, errori e chiarezza delle interazioni.</p>
+    <h2>{{ lang.t().home.cardContatti }}</h2>
+    <p>{{ lang.t().home.cardContattiDesc }}</p>
   </article>
 </section>

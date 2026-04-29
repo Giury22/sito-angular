@@ -1,18 +1,23 @@
+<!-- SEZIONE BIGLIETTI -->
 <section class="page-card">
-  <h1>Biglietti e prenotazioni</h1>
-  <p>
-    Qui puoi inserire in seguito un form reale per studiare etichette, hint, gestione errori, ordine
-    di tabulazione e messaggi di conferma.
-  </p>
+  <h1>{{ lang.t().biglietti.title }}</h1>
+  <p>{{ lang.t().biglietti.description }}</p>
 
-  <div class="ticket-grid" aria-label="Tipologie di biglietti disponibili">
+  <!-- GRIGLIA BIGLIETTI -->
+  <div class="ticket-grid" [attr.aria-label]="lang.t().biglietti.gridLabel">
     <article>
-      <h2>Intero</h2>
-      <p>Ingresso giornaliero al museo e accesso alle mostre permanenti.</p>
+      <h2>{{ lang.t().biglietti.interoTitle }}</h2>
+      <p>{{ lang.t().biglietti.interoDesc }}</p>
+      <p>
+        <strong>{{ lang.t().biglietti.interoPrice }}</strong>
+      </p>
     </article>
     <article>
-      <h2>Ridotto</h2>
-      <p>Tariffa agevolata per studenti, docenti e visitatori convenzionati.</p>
+      <h2>{{ lang.t().biglietti.ridottoTitle }}</h2>
+      <p>{{ lang.t().biglietti.ridottoDesc }}</p>
+      <p>
+        <strong>{{ lang.t().biglietti.ridottoPrice }}</strong>
+      </p>
     </article>
   </div>
 </section>

@@ -1,18 +1,82 @@
+<!-- HEADER -->
 <header class="site-header">
-  <div class="brand-block">
-    <p class="eyebrow">Tesi magistrale</p>
-    <a class="brand-title" routerLink="/">Museo Accessibilita</a>
-    <p class="brand-copy">
-      Sito museo Angular per analizzare e migliorare l'accessibilita dei componenti.
-    </p>
+  <!-- BARRA SUPERIORE: contiene il logo, il selettore lingua e il pulsante hamburger -->
+  <div class="header-bar">
+    <!-- LOGO: immagine del museo + nome, cliccabile per tornare alla home -->
+    <a class="brand-logo" routerLink="/" (click)="chiudiMenu()">
+      <img src="logo/logoSito.png" alt="" class="logo-img" />
+      <span class="brand-name">Museo della Vespa</span>
+    </a>
+
+    <!-- CONTROLLI DESTRA: solo pulsante hamburger (il selettore lingua è nella nav su desktop) -->
+    <div class="header-controls">
+      <!-- SELETTORE LINGUA: visibile solo su mobile dentro la barra superiore -->
+      <div class="lang-switcher lang-switcher--mobile">
+        <button
+          type="button"
+          class="lang-btn"
+          [class.lang-active]="lang.currentLang() === 'it'"
+          (click)="lang.setLang('it')"
+        >
+          IT
+        </button>
+        <button
+          type="button"
+          class="lang-btn"
+          [class.lang-active]="lang.currentLang() === 'en'"
+          (click)="lang.setLang('en')"
+        >
+          EN
+        </button>
+      </div>
+
+      <!-- PULSANTE HAMBURGER: apre e chiude il menu su mobile -->
+      <button class="hamburger" type="button" (click)="toggleMenu()">
+        <!-- Icona hamburger composta da tre linee orizzontali -->
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
   </div>
 
-  <nav aria-label="Navigazione principale" class="site-nav">
-    <a routerLink="/" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }"
-      >Home</a
+  <!-- NAVBAR: lista dei link di navigazione principali -->
+  <nav class="site-nav" [class.is-open]="menuAperto()" aria-label="Navigazione principale">
+    <a
+      routerLink="/"
+      routerLinkActive="is-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="chiudiMenu()"
+      >{{ lang.t().nav.home }}</a
     >
-    <a routerLink="/collezione" routerLinkActive="is-active">Collezione</a>
-    <a routerLink="/biglietti" routerLinkActive="is-active">Biglietti</a>
-    <a routerLink="/contatti" routerLinkActive="is-active">Contatti</a>
+    <a routerLink="/collezione" routerLinkActive="is-active" (click)="chiudiMenu()">{{
+      lang.t().nav.collezione
+    }}</a>
+    <a routerLink="/biglietti" routerLinkActive="is-active" (click)="chiudiMenu()">{{
+      lang.t().nav.biglietti
+    }}</a>
+    <a routerLink="/contatti" routerLinkActive="is-active" (click)="chiudiMenu()">{{
+      lang.t().nav.contatti
+    }}</a>
+
+    <!-- SELETTORE LINGUA: visibile solo su desktop, separato dai link di navigazione -->
+    <div class="lang-switcher lang-switcher--desktop">
+      <button
+        type="button"
+        class="lang-btn"
+        [class.lang-active]="lang.currentLang() === 'it'"
+        (click)="lang.setLang('it')"
+      >
+        IT
+      </button>
+      <button
+        type="button"
+        class="lang-btn"
+        [class.lang-active]="lang.currentLang() === 'en'"
+        (click)="lang.setLang('en')"
+      >
+        EN
+      </button>
+    </div>
   </nav>
 </header>

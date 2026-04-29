@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LanguageService } from '../../shared/language.service';
 
 @Component({
   selector: 'app-biglietti',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './biglietti.html',
   styleUrl: './biglietti.scss',
 })
-export class Biglietti {}
+export class Biglietti {
+  lang = inject(LanguageService);
+}

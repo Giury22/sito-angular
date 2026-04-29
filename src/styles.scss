@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+/* Reset margini e padding di default del browser.
+   Senza questo, body ha margin: 8px di default
+   e si vedono i bordi bianchi attorno all'app. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}

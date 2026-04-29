@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { LanguageService } from '../../shared/language.service';
 
 @Component({
   selector: 'app-collezione',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './collezione.html',
   styleUrl: './collezione.scss',
 })
-export class Collezione {}
+export class Collezione {
+  lang = inject(LanguageService);
+}

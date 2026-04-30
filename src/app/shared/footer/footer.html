@@ -1,5 +1,33 @@
 <!-- FOOTER -->
 <footer class="site-footer">
-  <p>{{ lang.t().footer.address }}</p>
-  <p>{{ lang.t().footer.copyright }}</p>
+  <div class="footer-body">
+    <!-- COLONNA 1: logo e nome museo -->
+    <div class="footer-brand">
+      <img src="logo/logoSito.png" alt="" class="footer-logo" />
+      <p class="footer-brand-name">Museo della Vespa</p>
+    </div>
+
+    <!-- COLONNA 2: orari -->
+    <div class="footer-col">
+      <p class="footer-col-title">{{ lang.t().footer.hoursTitle }}</p>
+      <ul class="footer-info-list">
+        <li>{{ lang.t().footer.hours }}</li>
+      </ul>
+    </div>
+
+    <!-- COLONNA 3: contatti -->
+    <div class="footer-col">
+      <p class="footer-col-title">{{ lang.t().footer.contactTitle }}</p>
+      <ul class="footer-info-list">
+        <li>{{ lang.t().footer.address }}</li>
+        <li>{{ lang.t().footer.phone }}</li>
+        <li>{{ lang.t().footer.email }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- BARRA COPYRIGHT -->
+  <div class="footer-bottom">
+    <p>{{ lang.t().footer.copyright }}</p>
+  </div>
 </footer>

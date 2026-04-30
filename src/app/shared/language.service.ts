@@ -70,7 +70,15 @@ const TRANSLATIONS = {
     },
     // FOOTER
     footer: {
-      address: 'Museo della Vespa — Via Appia Nuova 42, Roma',
+      tagline: 'Il mito della Vespa, tutto in un posto.',
+      navTitle: 'Navigazione',
+      infoTitle: 'Info pratiche',
+      hoursTitle: 'Orari',
+      contactTitle: 'Contattaci',
+      hours: 'Mar–Dom: 10:00 – 18:00',
+      address: 'Via Appia Nuova 42, Roma',
+      phone: '+39 06 1234567',
+      email: 'info@museodellavespa.it',
       copyright: '© 2026 Museo della Vespa. Tutti i diritti riservati.',
     },
   },
@@ -138,7 +146,15 @@ const TRANSLATIONS = {
     },
     // FOOTER
     footer: {
-      address: 'Vespa Museum — Via Appia Nuova 42, Rome',
+      tagline: 'The Vespa legend, all in one place.',
+      navTitle: 'Navigation',
+      infoTitle: 'Practical info',
+      hoursTitle: 'Opening hours',
+      contactTitle: 'Contact us',
+      hours: 'Tue–Sun: 10:00 – 18:00',
+      address: 'Via Appia Nuova 42, Rome',
+      phone: '+39 06 1234567',
+      email: 'info@museodellavespa.it',
       copyright: '© 2026 Vespa Museum. All rights reserved.',
     },
   },

@@ -1,20 +1,98 @@
+/* FOOTER */
 .site-footer {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.5rem 0 2.5rem;
+  background: var(--color-surface);
   border-top: 1px solid var(--color-border);
   color: var(--color-muted);
   font-family: Arial, sans-serif;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  margin-top: 3rem;
 }
 
-.site-footer p {
+/* CORPO: colonne impilate su mobile */
+.footer-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 1.5rem;
+}
+
+/* COLONNA BRAND: logo + nome museo */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-logo {
+  border-radius: 50%;
+  height: 56px;
+  width: 56px;
+  object-fit: cover;
+}
+
+.footer-brand-name {
+  color: var(--color-text);
+  font-family: Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
   margin: 0;
 }
 
-@media (max-width: 720px) {
-  .site-footer {
+/* TITOLO DI OGNI COLONNA */
+.footer-col-title {
+  color: var(--color-text);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem;
+}
+
+/* LISTA INFO */
+.footer-info-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  line-height: 1.5;
+}
+
+/* BARRA COPYRIGHT */
+.footer-bottom {
+  border-top: 1px solid var(--color-border);
+  padding: 1rem 1.25rem;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.footer-bottom p {
+  margin: 0;
+}
+
+/* DESKTOP: tre colonne affiancate */
+@media (min-width: 768px) {
+  .footer-body {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 3rem 2rem 2rem;
+  }
+
+  .footer-brand {
+    flex: 2;
     flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .footer-col {
+    flex: 1;
+  }
+
+  .footer-bottom {
+    padding: 1rem 2rem;
   }
 }

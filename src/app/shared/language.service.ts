@@ -20,7 +20,7 @@ const TRANSLATIONS = {
       eyebrow: 'Benvenuto',
       hero: 'Il mito della Vespa, tutto in un posto.',
       description:
-        "Il Museo della Vespa di Roma racconta ottant'anni di storia, design e cultura di uno dei simboli piu amati d'Italia. Dalla prima Vespa 98 del 1946 ai modelli contemporanei: un percorso unico tra esemplari originali, manifesti pubblicitari e documenti d'archivio.",
+        "Nato dalla passione di un ex meccanico romano che negli anni '90 iniziò a restaurare Vespe abbandonate, il Museo della Vespa di Roma apre i battenti nel 2008 in un ex edificio industriale riconvertito. Oggi raccoglie modelli storici dagli anni '40 fino ai giorni nostri: ogni Vespa racconta un'epoca, dal dopoguerra al boom economico, fino agli anni della Dolce Vita. Un'icona di stile, libertà e cultura italiana, visitata da appassionati di tutto il mondo.",
       gridLabel: 'Sezioni principali del sito',
       cardCollezione: 'Collezione',
       cardCollezioneDesc:
@@ -31,6 +31,19 @@ const TRANSLATIONS = {
       cardContatti: 'Contatti',
       cardContattiDesc:
         'Per informazioni, prenotazioni di gruppo e richieste speciali, scrivici o chiamaci direttamente.',
+      audioBtn: 'Traccia audio',
+      bookBtn: 'Prenota la tua visita',
+      bannerLabel: 'Mostra in corso',
+      bannerTitle: "Vespa d'inverno — edizione 2026",
+      bannerDesc:
+        'Una selezione esclusiva di modelli invernali e prototipi rari. Dal 1 novembre 2026 al 28 febbraio 2027.',
+      bannerCta: 'Scopri la mostra',
+      stat1Value: '200+',
+      stat1Label: 'Modelli esposti',
+      stat2Value: '15.000',
+      stat2Label: "Visitatori l'anno",
+      stat3Value: '2008',
+      stat3Label: 'Anno di apertura',
     },
     // COLLEZIONE
     collezione: {
@@ -98,7 +111,7 @@ const TRANSLATIONS = {
       eyebrow: 'Welcome',
       hero: 'The Vespa legend, all in one place.',
       description:
-        "The Vespa Museum in Rome tells eighty years of history, design and culture of one of Italy's most beloved icons. From the first Vespa 98 of 1946 to contemporary models: a unique journey through original specimens, advertising posters and archive documents.",
+        'Born from the passion of a Roman mechanic who in the 1990s began restoring abandoned Vespas, the Vespa Museum of Rome opened in 2008 in a converted industrial building. It houses models from the 1940s to the present day: each Vespa tells a story, from the post-war years to the economic boom and the Dolce Vita era. An icon of style, freedom and Italian culture, visited by enthusiasts from around the world.',
       gridLabel: 'Main sections of the site',
       cardCollezione: 'Collection',
       cardCollezioneDesc:
@@ -109,6 +122,19 @@ const TRANSLATIONS = {
       cardContatti: 'Contact',
       cardContattiDesc:
         'For information, group bookings and special requests, write to us or call us directly.',
+      audioBtn: 'Audio guide',
+      bookBtn: 'Book your visit',
+      bannerLabel: 'Ongoing exhibition',
+      bannerTitle: 'Winter Vespa — 2026 edition',
+      bannerDesc:
+        'An exclusive selection of winter models and rare prototypes. From 1 November 2026 to 28 February 2027.',
+      bannerCta: 'Discover the exhibition',
+      stat1Value: '200+',
+      stat1Label: 'Models on display',
+      stat2Value: '15,000',
+      stat2Label: 'Visitors per year',
+      stat3Value: '2008',
+      stat3Label: 'Year of opening',
     },
     // COLLEZIONE
     collezione: {

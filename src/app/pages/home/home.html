@@ -1,24 +1,76 @@
-<!-- HERO -->
-<section class="page-card hero">
-  <p class="section-label">{{ lang.t().home.eyebrow }}</p>
-  <h1>{{ lang.t().home.hero }}</h1>
-  <p>{{ lang.t().home.description }}</p>
+<!-- BANNER MOSTRA INVERNALE: barra informativa in cima -->
+@if (bannerAperto()) {
+  <div class="mostra-banner">
+    <span class="mostra-banner-testo"
+      >&#9733; {{ lang.t().home.bannerTitle }} &mdash; {{ lang.t().home.bannerDesc }}</span
+    >
+    <button class="mostra-banner-chiudi" type="button" (click)="chiudiBanner()">&#10005;</button>
+  </div>
+}
+
+<!-- CAROSELLO FOTO -->
+<section class="carosello">
+  <div class="carosello-frame">
+    <img
+      [src]="slides[indiceAttivo()].src"
+      [alt]="slides[indiceAttivo()].alt"
+      class="carosello-img"
+    />
+    <!-- frecce di navigazione -->
+    <button class="carosello-btn carosello-btn--prev" type="button" (click)="precedente()">
+      &#8249;
+    </button>
+    <button class="carosello-btn carosello-btn--next" type="button" (click)="successiva()">
+      &#8250;
+    </button>
+  </div>
+
+  <!-- pallini indicatori -->
+  <div class="carosello-dots">
+    @for (slide of slides; track $index) {
+      <button
+        type="button"
+        class="dot"
+        [class.dot--active]="indiceAttivo() === $index"
+        (click)="vaiA($index)"
+      ></button>
+    }
+  </div>
 </section>
 
-<!-- GRIGLIA CARD -->
-<section class="page-grid" [attr.aria-label]="lang.t().home.gridLabel">
-  <article class="page-card">
-    <h2>{{ lang.t().home.cardCollezione }}</h2>
-    <p>{{ lang.t().home.cardCollezioneDesc }}</p>
-  </article>
+<!-- DESCRIZIONE DEL MUSEO -->
+<div class="home-body">
+  <section class="home-descrizione">
+    <p>{{ lang.t().home.description }}</p>
+  </section>
 
-  <article class="page-card">
-    <h2>{{ lang.t().home.cardBiglietti }}</h2>
-    <p>{{ lang.t().home.cardBigliettiDesc }}</p>
-  </article>
+  <!-- PULSANTI AZIONE E PLAYER AUDIO -->
+  <div class="home-actions">
+    <button type="button" class="btn-audio" (click)="toggleAudio()">
+      {{ lang.t().home.audioBtn }}
+    </button>
 
-  <article class="page-card">
-    <h2>{{ lang.t().home.cardContatti }}</h2>
-    <p>{{ lang.t().home.cardContattiDesc }}</p>
-  </article>
-</section>
+    <!-- PLAYER AUDIO: visibile solo dopo aver cliccato il pulsante -->
+    @if (audioAperto()) {
+      <audio class="audio-player" controls [src]="audioSrc()"></audio>
+    }
+
+    <a routerLink="/biglietti" class="btn-prenota">{{ lang.t().home.bookBtn }}</a>
+  </div>
+</div>
+
+<!-- NUMERI DEL MUSEO -->
+<div class="home-stats">
+  <div class="stat">
+    <span class="stat-value">{{ lang.t().home.stat1Value }}</span>
+    <span class="stat-label">{{ lang.t().home.stat1Label }}</span>
+  </div>
+  <div class="stat">
+    <span class="stat-value">{{ lang.t().home.stat2Value }}</span>
+    <span class="stat-label">{{ lang.t().home.stat2Label }}</span>
+  </div>
+  <div class="stat">
+    <span class="stat-value">{{ lang.t().home.stat3Value }}</span>
+    <span class="stat-label">{{ lang.t().home.stat3Label }}</span>
+  </div>
+</div>

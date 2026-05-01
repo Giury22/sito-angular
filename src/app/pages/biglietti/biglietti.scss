@@ -1,32 +1,604 @@
-.page-card {
-  padding: 1.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 1.25rem;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-soft);
+/* TITOLO E DESCRIZIONE */
+.big-title {
+  font-family: Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 0.75rem;
 }
 
-.page-card p {
+.big-desc {
   color: var(--color-muted);
   line-height: 1.7;
+  margin: 0 0 2rem;
 }
 
-.ticket-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.ticket-grid article {
-  padding: 1rem;
-  border-radius: 1rem;
-  background: #fff;
+/* SEZIONE GENERICA: card contenitore */
+.big-section {
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-soft);
+  /* Previene overflow orizzontale su mobile (es. calendario su schermi stretti) */
+  overflow: hidden;
 }
 
-@media (max-width: 720px) {
-  .ticket-grid {
-    grid-template-columns: 1fr;
+/* MOBILE: riduce il padding della sezione per dare più spazio al calendario */
+@media (max-width: 480px) {
+  .big-section {
+    padding: 1rem 0.75rem;
+    border-radius: 1rem;
+  }
+}
+
+/* ============================================================
+   WIDGET: TABELLA
+   Primo <table> del sito — struttura base senza scope/summary
+   ============================================================ */
+.big-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.big-table-caption {
+  font-family: Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+  color: var(--color-text);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  caption-side: top;
+}
+
+.big-table thead tr {
+  border-bottom: 2px solid var(--color-accent);
+}
+
+.big-table th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent);
+}
+
+.big-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-muted);
+  vertical-align: top;
+}
+
+.big-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.td-bold {
+  font-weight: 700;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.td-price {
+  font-weight: 700;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   MODULO DI PRENOTAZIONE
+   ============================================================ */
+.big-form-title {
+  font-family: Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+  color: var(--color-text);
+}
+
+/* ERRORI */
+.big-errori {
+  background: #fff3f3;
+  border: 1px solid #e57373;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.big-errore-item {
+  color: #c62828;
+  font-size: 0.88rem;
+  margin: 0;
+}
+
+.big-errore-item + .big-errore-item {
+  margin-top: 0.3rem;
+}
+
+/* GRIGLIA FORM — mobile: colonna singola */
+.big-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.big-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.big-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ============================================================
+   WIDGET: input[type="date"] — primo date picker del sito
+   ============================================================ */
+.big-input {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--color-bg);
+  color: var(--color-text);
+  outline: none;
+  transition: border-color 0.2s;
+  /* Previene overflow: l'input non supera il contenitore */
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.big-input:focus {
+  border-color: var(--color-accent);
+}
+
+/* ============================================================
+   WIDGET: select — primo dropdown del sito
+   ============================================================ */
+.big-select {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-family: inherit;
+  background: var(--color-bg);
+  color: var(--color-text);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: auto;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.big-select:focus {
+  border-color: var(--color-accent);
+}
+
+/* ============================================================
+   WIDGET: checkbox + number — selezione biglietti
+   ============================================================ */
+.big-ticket-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.big-ticket-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.big-checkbox {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.big-ticket-nome {
+  flex: 1;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.big-number {
+  width: 4.5rem;
+  padding: 0.35rem 0.5rem;
+  border: 2px solid var(--color-accent);
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  text-align: center;
+  background: var(--color-surface);
+  color: var(--color-text);
+  outline: none;
+}
+
+/* TOTALE DINAMICO */
+.big-totale {
+  font-size: 1.1rem;
+  color: var(--color-text);
+  padding: 0.75rem 1rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-accent);
+  border-radius: 0.75rem;
+  text-align: right;
+}
+
+/* BOTTONE PRINCIPALE */
+.big-btn-prenota {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.big-btn-prenota:hover {
+  background: var(--color-accent-strong);
+}
+
+/* ============================================================
+   WIDGET: TOAST / POPUP DI CONFERMA
+   Primo overlay e dialog del sito — nessun role/focus trap
+   ============================================================ */
+.big-toast-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.big-toast {
+  background: var(--color-surface);
+  border-radius: 1.25rem;
+  padding: 2rem;
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.big-toast-titolo {
+  font-family: Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  margin: 0 0 0.75rem;
+}
+
+.big-toast-msg {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+}
+
+.big-toast-btn {
+  padding: 0.75rem 2rem;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ============================================================
+   WIDGET: CALENDARIO DISPONIBILITÀ
+   Griglia 7 colonne CSS — navigazione mese + colori per stato
+   ============================================================ */
+.big-cal-heading {
+  font-family: Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  color: var(--color-text);
+}
+
+/* Riga navigazione mese */
+.big-cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.big-cal-nav-btn {
+  background: none;
+  border: 2px solid var(--color-border);
+  border-radius: 0.5rem;
+  width: 2.2rem;
+  height: 2.2rem;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-text);
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+
+.big-cal-nav-btn:hover {
+  border-color: var(--color-accent);
+  background: var(--color-bg);
+}
+
+.big-cal-mese {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+/* Griglia 7 colonne — intestazioni + celle giorni */
+.big-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+/* Intestazione colonna (Lu Ma Me Gi Ve Sa Do) */
+.big-cal-head {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  padding: 0.4rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Cella giorno — base */
+.big-cal-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  border-radius: 0.4rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.25rem 0.1rem;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+  font-family: inherit;
+  /* Previene overflow celle nella griglia */
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Celle vuote (padding prima del 1° del mese) */
+.big-cal-day--vuoto {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* Giorni passati */
+.big-cal-day--passato {
+  opacity: 0.28;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Lunedì — museo chiuso */
+.big-cal-day--chiuso {
+  background: #eeebe5;
+  color: var(--color-muted);
+  cursor: not-allowed;
+}
+
+/* Esaurito — 0 posti */
+.big-cal-day--esaurito {
+  background: #fde8e8;
+  color: #b71c1c;
+  cursor: not-allowed;
+}
+
+/* Ultimi posti (1-15 posti) */
+.big-cal-day--quasi {
+  background: #fff3e0;
+  color: #bf360c;
+  cursor: pointer;
+}
+
+.big-cal-day--quasi:hover {
+  background: #ffe0b2;
+  transform: scale(1.05);
+}
+
+/* Disponibile (16+ posti) */
+.big-cal-day--ok {
+  background: #e8f5e9;
+  color: #1b5e20;
+  cursor: pointer;
+}
+
+.big-cal-day--ok:hover {
+  background: #c8e6c9;
+  transform: scale(1.05);
+}
+
+/* Giorno selezionato — sovrascrive tutti gli altri stati */
+.big-cal-day--sel {
+  background: var(--color-accent) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(15, 92, 92, 0.35);
+  transform: scale(1.08);
+}
+
+/* Numero del giorno */
+.big-cal-num {
+  font-weight: 700;
+  font-size: 0.88rem;
+  line-height: 1;
+}
+
+/* Badge sotto il numero (posti / Chiuso / Esaurito) */
+.big-cal-badge {
+  font-size: 0.58rem;
+  line-height: 1;
+  margin-top: 3px;
+  font-weight: 600;
+  text-align: center;
+  /* Tronca testo se la cella è troppo stretta */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+/* Su schermi molto piccoli (< 380px) nasconde i badge per evitare overflow */
+@media (max-width: 380px) {
+  .big-cal-badge {
+    display: none;
+  }
+  .big-cal-day {
+    min-height: 36px;
+  }
+  .big-cal-num {
+    font-size: 0.78rem;
+  }
+}
+
+/* Legenda colori */
+.big-cal-legenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-top: 1rem;
+  font-size: 0.78rem;
+}
+
+.leg-ok {
+  color: #1b5e20;
+  font-weight: 600;
+}
+
+.leg-quasi {
+  color: #bf360c;
+  font-weight: 600;
+}
+
+.leg-esaurito {
+  color: #b71c1c;
+  font-weight: 600;
+}
+
+.leg-chiuso {
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+/* ============================================================
+   DATA SELEZIONATA — display read-only nel form
+   Sostituisce l'input[type="date"] — la data viene dal calendario
+   ============================================================ */
+.big-data-display {
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--color-accent);
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.big-data-display--vuota {
+  border-color: var(--color-border);
+  color: var(--color-muted);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Testo leggibile (es. "2 Maggio 2026") che appare sotto l'input date */
+.big-data-hint {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* Avviso inline: data non disponibile selezionata tramite picker nativo */
+.big-data-avviso {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.83rem;
+  color: #c62828;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* DESKTOP */
+@media (min-width: 768px) {
+  .big-title {
+    font-size: 2rem;
+  }
+
+  /* Tabella: colonna descrizione prende più spazio */
+  .big-table td:nth-child(2),
+  .big-table th:nth-child(2) {
+    width: 60%;
+  }
+
+  /* Celle giorno più alte su schermi grandi */
+  .big-cal-day {
+    min-height: 58px;
+  }
+
+  .big-cal-num {
+    font-size: 1rem;
+  }
+
+  .big-cal-badge {
+    font-size: 0.65rem;
+  }
+
+  /* Form a 2 colonne su desktop */
+  .big-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Riga checkbox + totale + bottone: larghezza piena */
+  .big-form-group--full,
+  .big-totale,
+  .big-btn-prenota {
+    grid-column: 1 / -1;
   }
 }

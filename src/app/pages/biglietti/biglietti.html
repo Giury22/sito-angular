@@ -1,23 +1,288 @@
-<!-- SEZIONE BIGLIETTI -->
-<section class="page-card">
-  <h1>{{ lang.t().biglietti.title }}</h1>
-  <p>{{ lang.t().biglietti.description }}</p>
+<!-- TITOLO PAGINA -->
+<h1 class="big-title">{{ lang.t().biglietti.title }}</h1>
+<p class="big-desc">{{ lang.t().biglietti.description }}</p>
 
-  <!-- GRIGLIA BIGLIETTI -->
-  <div class="ticket-grid" [attr.aria-label]="lang.t().biglietti.gridLabel">
-    <article>
-      <h2>{{ lang.t().biglietti.interoTitle }}</h2>
-      <p>{{ lang.t().biglietti.interoDesc }}</p>
-      <p>
-        <strong>{{ lang.t().biglietti.interoPrice }}</strong>
-      </p>
-    </article>
-    <article>
-      <h2>{{ lang.t().biglietti.ridottoTitle }}</h2>
-      <p>{{ lang.t().biglietti.ridottoDesc }}</p>
-      <p>
-        <strong>{{ lang.t().biglietti.ridottoPrice }}</strong>
-      </p>
-    </article>
+<!-- ============================================================
+     WIDGET 1: TABELLA PREZZI
+     Nuovo elemento rispetto al resto del sito: primo <table> usato.
+     Struttura semantica: caption, thead, tbody.
+     Gap a11y intenzionali: nessun scope su th, nessun summary.
+     ============================================================ -->
+<div class="big-section">
+  <table class="big-table">
+    <caption class="big-table-caption">
+      {{
+        lang.t().biglietti.tableCaption
+      }}
+    </caption>
+    <thead>
+      <tr>
+        <th>{{ lang.t().biglietti.tableColTipo }}</th>
+        <th>{{ lang.t().biglietti.tableColDesc }}</th>
+        <th>{{ lang.t().biglietti.tableColPrezzo }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-bold">{{ lang.t().biglietti.interoTitle }}</td>
+        <td>{{ lang.t().biglietti.interoDesc }}</td>
+        <td class="td-price">{{ lang.t().biglietti.interoPrice }}</td>
+      </tr>
+      <tr>
+        <td class="td-bold">{{ lang.t().biglietti.ridottoTitle }}</td>
+        <td>{{ lang.t().biglietti.ridottoDesc }}</td>
+        <td class="td-price">{{ lang.t().biglietti.ridottoPrice }}</td>
+      </tr>
+      <tr>
+        <td class="td-bold">{{ lang.t().biglietti.gratuito }}</td>
+        <td>{{ lang.t().biglietti.gratuitoDesc }}</td>
+        <td class="td-price">{{ lang.t().biglietti.gratuitoPrice }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============================================================
+     WIDGET 2: CALENDARIO DISPONIBILITÀ
+     Nuovo nel sito: primo calendario interattivo custom.
+     Costruito senza CDK/Material — grid CSS 7 colonne + segnali.
+     Colori: verde = disponibile, arancio = ultimi posti,
+     rosso = esaurito, grigio = chiuso/passato.
+     Gap a11y intenzionali: nessun role="grid", nessun aria-selected,
+     nessun aria-disabled, nessun annuncio screen reader alla selezione,
+     nessuna navigazione da tastiera con frecce.
+     ============================================================ -->
+<div class="big-section">
+  <h2 class="big-cal-heading">{{ lang.t().biglietti.calTitolo }}</h2>
+
+  <!-- Navigazione mese: Prec ← Nome Mese Anno → Succ -->
+  <div class="big-cal-nav">
+    <button type="button" class="big-cal-nav-btn" (click)="mesePrecedente()">&#8249;</button>
+    <span class="big-cal-mese">{{ titoloMese() }}</span>
+    <button type="button" class="big-cal-nav-btn" (click)="meseSuccessivo()">&#8250;</button>
   </div>
-</section>
+
+  <!-- Griglia calendario: 7 colonne Lun–Dom -->
+  <div class="big-cal-grid">
+    <!-- Intestazioni colonne (Lu Ma Me Gi Ve Sa Do) -->
+    @for (g of intestazioniGiorni; track g) {
+      <div class="big-cal-head">{{ g }}</div>
+    }
+
+    <!-- Celle giorni del mese -->
+    @for (giorno of giorniCalendario(); track $index) {
+      <button
+        type="button"
+        class="big-cal-day"
+        [class.big-cal-day--vuoto]="giorno.stato === 'vuoto'"
+        [class.big-cal-day--passato]="giorno.stato === 'passato'"
+        [class.big-cal-day--chiuso]="giorno.stato === 'chiuso'"
+        [class.big-cal-day--esaurito]="giorno.stato === 'esaurito'"
+        [class.big-cal-day--quasi]="giorno.stato === 'quasi'"
+        [class.big-cal-day--ok]="giorno.stato === 'ok'"
+        [class.big-cal-day--sel]="giorno.data && giorno.data === dataVisita()"
+        [disabled]="
+          !giorno.data ||
+          giorno.stato === 'vuoto' ||
+          giorno.stato === 'passato' ||
+          giorno.stato === 'chiuso' ||
+          giorno.stato === 'esaurito'
+        "
+        (click)="selezionaGiorno(giorno.data)"
+      >
+        @if (giorno.numero > 0) {
+          <span class="big-cal-num">{{ giorno.numero }}</span>
+          @if (giorno.stato === 'chiuso') {
+            <span class="big-cal-badge">{{ lang.t().biglietti.calChiuso }}</span>
+          } @else if (giorno.stato === 'esaurito') {
+            <span class="big-cal-badge">{{ lang.t().biglietti.calEsaurito }}</span>
+          } @else if (giorno.stato === 'ok' || giorno.stato === 'quasi') {
+            <span class="big-cal-badge">{{ giorno.posti }} {{ lang.t().biglietti.calPosti }}</span>
+          }
+        }
+      </button>
+    }
+  </div>
+
+  <!-- Legenda colori -->
+  <div class="big-cal-legenda">
+    <span class="leg-ok">&#9679; {{ lang.t().biglietti.calLegOk }}</span>
+    <span class="leg-quasi">&#9679; {{ lang.t().biglietti.calLegQuasi }}</span>
+    <span class="leg-esaurito">&#9679; {{ lang.t().biglietti.calLegEsaurito }}</span>
+    <span class="leg-chiuso">&#9679; {{ lang.t().biglietti.calLegChiuso }}</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODULO DI PRENOTAZIONE
+     Widget presenti:
+       - display data selezionata (dal calendario)
+       - select → fascia oraria
+       - checkbox + number → tipo biglietto e quantità
+       - toast/overlay → conferma prenotazione
+     Gap a11y intenzionali: nessun fieldset/legend, span invece di
+     label, errori non annunciati live, bottone senza feedback SR.
+     ============================================================ -->
+<div class="big-section">
+  <h2 class="big-form-title">{{ lang.t().biglietti.formTitle }}</h2>
+
+  <!-- ERRORI DI VALIDAZIONE -->
+  @if (errori().length > 0) {
+    <div class="big-errori">
+      @for (e of errori(); track e) {
+        <p class="big-errore-item">{{ e }}</p>
+      }
+    </div>
+  }
+
+  <div class="big-form">
+    <!-- DATA: input[type="date"] nativo (mini-calendario al click) + display testo formattato.
+         I due sistemi sono sincronizzati: selezione dal calendario custom aggiorna l'input
+         e viceversa. onDataInputChange naviga anche il calendario custom al mese scelto.
+         Gap a11y intenzionali: <span> invece di <label>, nessun aria-describedby. -->
+    <div class="big-form-group">
+      <span class="big-label">{{ lang.t().biglietti.labelData }}</span>
+      <!-- WIDGET: input[type="date"] — mini-calendario nativo del browser al click -->
+      <input
+        class="big-input"
+        type="date"
+        [min]="dataMin"
+        [max]="dataMax"
+        [ngModel]="dataVisita()"
+        (ngModelChange)="onDataInputChange($event)"
+      />
+      <!-- Testo leggibile con la data selezionata -->
+      @if (dataFormattata) {
+        <span class="big-data-hint">{{ dataFormattata }}</span>
+      }
+      <!-- Avviso inline: data chiusa o esaurita scelta dal picker nativo -->
+      @if (avvisoData()) {
+        <span class="big-data-avviso">&#9888; {{ avvisoData() }}</span>
+      }
+    </div>
+
+    <!-- WIDGET: select — primo dropdown del sito -->
+    <div class="big-form-group">
+      <span class="big-label">{{ lang.t().biglietti.labelOrario }}</span>
+      <select
+        class="big-select"
+        [ngModel]="orarioScelto()"
+        (ngModelChange)="orarioScelto.set($event)"
+      >
+        <option value="">--</option>
+        <option value="10-12">{{ lang.t().biglietti.orario1 }}</option>
+        <option value="12-14">{{ lang.t().biglietti.orario2 }}</option>
+        <option value="14-16">{{ lang.t().biglietti.orario3 }}</option>
+        <option value="16-18">{{ lang.t().biglietti.orario4 }}</option>
+      </select>
+    </div>
+
+    <!-- WIDGET: checkbox + number — selezione tipo e quantità biglietti -->
+    <div class="big-form-group big-form-group--full">
+      <span class="big-label">{{ lang.t().biglietti.labelTipi }}</span>
+
+      <div class="big-ticket-rows">
+        <!-- Riga Intero -->
+        <div class="big-ticket-row">
+          <input
+            type="checkbox"
+            class="big-checkbox"
+            id="cb-intero"
+            [ngModel]="interoAttivo()"
+            (ngModelChange)="interoAttivo.set($event)"
+          />
+          <span class="big-ticket-nome">
+            {{ lang.t().biglietti.interoTitle }} — {{ lang.t().biglietti.interoPrice }}
+          </span>
+          @if (interoAttivo()) {
+            <input
+              type="number"
+              class="big-number"
+              min="1"
+              max="20"
+              [ngModel]="qtaIntero()"
+              (ngModelChange)="qtaIntero.set(+$event)"
+            />
+          }
+        </div>
+
+        <!-- Riga Ridotto -->
+        <div class="big-ticket-row">
+          <input
+            type="checkbox"
+            class="big-checkbox"
+            id="cb-ridotto"
+            [ngModel]="ridottoAttivo()"
+            (ngModelChange)="ridottoAttivo.set($event)"
+          />
+          <span class="big-ticket-nome">
+            {{ lang.t().biglietti.ridottoTitle }} — {{ lang.t().biglietti.ridottoPrice }}
+          </span>
+          @if (ridottoAttivo()) {
+            <input
+              type="number"
+              class="big-number"
+              min="1"
+              max="20"
+              [ngModel]="qtaRidotto()"
+              (ngModelChange)="qtaRidotto.set(+$event)"
+            />
+          }
+        </div>
+
+        <!-- Riga Gratuito -->
+        <div class="big-ticket-row">
+          <input
+            type="checkbox"
+            class="big-checkbox"
+            id="cb-gratuito"
+            [ngModel]="gratuitoAttivo()"
+            (ngModelChange)="gratuitoAttivo.set($event)"
+          />
+          <span class="big-ticket-nome">
+            {{ lang.t().biglietti.gratuito }} — {{ lang.t().biglietti.gratuitoPrice }}
+          </span>
+          @if (gratuitoAttivo()) {
+            <input
+              type="number"
+              class="big-number"
+              min="1"
+              max="20"
+              [ngModel]="qtaGratuito()"
+              (ngModelChange)="qtaGratuito.set(+$event)"
+            />
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTALE DINAMICO -->
+    @if (interoAttivo() || ridottoAttivo()) {
+      <div class="big-totale">
+        Totale: <strong>€ {{ totale }},00</strong>
+      </div>
+    }
+
+    <!-- BOTTONE PRENOTAZIONE -->
+    <button type="button" class="big-btn-prenota" (click)="prenota()">
+      {{ lang.t().biglietti.btnPrenota }}
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     WIDGET: TOAST / POPUP DI CONFERMA
+     Gap a11y intenzionali: nessun role="dialog", nessun focus
+     trap, nessun aria-modal, nessun aria-live.
+     ============================================================ -->
+@if (toastVisibile()) {
+  <div class="big-toast-overlay" (click)="chiudiToast()">
+    <div class="big-toast" (click)="$event.stopPropagation()">
+      <p class="big-toast-titolo">{{ lang.t().biglietti.toastTitolo }}</p>
+      <p class="big-toast-msg">{{ lang.t().biglietti.toastMsg }}</p>
+      <button type="button" class="big-toast-btn" (click)="chiudiToast()">
+        {{ lang.t().biglietti.toastChiudi }}
+      </button>
+    </div>
+  </div>
+}

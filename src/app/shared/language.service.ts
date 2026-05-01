@@ -47,15 +47,13 @@ const TRANSLATIONS = {
     },
     // COLLEZIONE
     collezione: {
-      title: 'Collezione permanente',
-      description:
-        "La collezione permanente del Museo della Vespa raccoglie oltre duecento esemplari originali, dai primi prototipi del dopoguerra fino alle serie limitate del XXI secolo, restaurati e documentati con materiali d'archivio Piaggio.",
-      vespa98Title: 'Vespa 98, 1946',
-      vespa98Desc:
-        'Il primo modello prodotto da Piaggio. Motore a due tempi da 98 cc, telaio in lamiera stampata.',
-      vespa150Title: 'Vespa 150 GS, 1955',
-      vespa150Desc:
-        'La Gran Sport, soprannominata "VS1", fu la Vespa sportiva per eccellenza degli anni Cinquanta.',
+      title: 'La nostra collezione',
+      videoTitle: 'Il museo in video',
+      searchPlaceholder: 'Cerca un modello…',
+      moreInfo: 'Più info',
+      lessInfo: 'Meno info',
+      wikiLink: 'Tutte le info ↗',
+      noResults: 'Nessun modello trovato.',
     },
     // BIGLIETTI
     biglietti: {
@@ -138,15 +136,13 @@ const TRANSLATIONS = {
     },
     // COLLEZIONE
     collezione: {
-      title: 'Permanent Collection',
-      description:
-        'The permanent collection of the Vespa Museum gathers over two hundred original specimens, from the first post-war prototypes to the limited series of the 21st century, restored and documented with Piaggio archive materials.',
-      vespa98Title: 'Vespa 98, 1946',
-      vespa98Desc:
-        'The first model produced by Piaggio. Two-stroke engine of 98 cc, pressed steel frame.',
-      vespa150Title: 'Vespa 150 GS, 1955',
-      vespa150Desc:
-        'The Gran Sport, nicknamed "VS1", was the definitive sporting Vespa of the 1950s.',
+      title: 'Our collection',
+      videoTitle: 'The museum on video',
+      searchPlaceholder: 'Search a model…',
+      moreInfo: 'More info',
+      lessInfo: 'Less info',
+      wikiLink: 'All info ↗',
+      noResults: 'No models found.',
     },
     // BIGLIETTI
     biglietti: {

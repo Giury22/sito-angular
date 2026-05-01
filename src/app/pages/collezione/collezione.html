@@ -1,17 +1,67 @@
-<!-- SEZIONE COLLEZIONE -->
-<section class="page-card">
-  <h1>{{ lang.t().collezione.title }}</h1>
-  <p>{{ lang.t().collezione.description }}</p>
+<!-- TITOLO PAGINA -->
+<h1 class="col-title">{{ lang.t().collezione.title }}</h1>
 
-  <!-- LISTA MODELLI -->
-  <ul class="collection-list">
-    <li>
-      <h2>{{ lang.t().collezione.vespa98Title }}</h2>
-      <p>{{ lang.t().collezione.vespa98Desc }}</p>
-    </li>
-    <li>
-      <h2>{{ lang.t().collezione.vespa150Title }}</h2>
-      <p>{{ lang.t().collezione.vespa150Desc }}</p>
-    </li>
-  </ul>
-</section>
+<!-- VIDEO DEL MUSEO -->
+<div class="col-video">
+  <video class="col-video-player" controls preload="metadata">
+    <source src="collezione/videomuseo.mp4" type="video/mp4" />
+  </video>
+</div>
+
+<!-- BARRA DI RICERCA -->
+<div class="col-cerca">
+  <input
+    type="search"
+    class="col-cerca-input"
+    [placeholder]="lang.t().collezione.searchPlaceholder"
+    (input)="onRicerca($event)"
+  />
+  <span class="col-cerca-icona" aria-hidden="true">&#128269;</span>
+</div>
+
+<!-- GRIGLIA CARD MODELLI -->
+<div class="col-grid">
+  @for (modello of modelliVisibili(); track modello.id) {
+    <div class="col-card" [class.col-card--aperta]="isAperta(modello.id)">
+      <!-- FOTO -->
+      <img class="col-card-img" [src]="modello.img" [alt]="modello.nome" loading="lazy" />
+
+      <!-- CORPO CARD -->
+      <div class="col-card-body">
+        <!-- RIGA NOME + TOGGLE -->
+        <div class="col-card-header">
+          <div class="col-card-meta">
+            <p class="col-card-nome">{{ modello.nome }}</p>
+            <p class="col-card-info">{{ modello.anno }} &middot; {{ modello.cilindrata }}</p>
+          </div>
+          <div class="col-card-toggle-wrap">
+            <span class="col-card-toggle-label">{{ lang.t().collezione.moreInfo }}</span>
+            <button
+              type="button"
+              class="col-card-toggle"
+              [class.col-card-toggle--on]="isAperta(modello.id)"
+              (click)="toggleCard(modello.id)"
+            >
+              <span class="col-card-toggle-knob"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- DETTAGLI ESPANSI -->
+        @if (isAperta(modello.id)) {
+          <div class="col-card-ext">
+            <p class="col-card-desc">
+              {{ lang.currentLang() === 'it' ? modello.descrizione_it : modello.descrizione_en }}
+            </p>
+            <p class="col-card-codice">{{ modello.motore }} &middot; {{ modello.codice }}</p>
+            <a class="col-card-wiki" [href]="modello.wiki" target="_blank" rel="noopener noreferrer"
+              >{{ lang.t().collezione.wikiLink }} &#8599;</a
+            >
+          </div>
+        }
+      </div>
+    </div>
+  } @empty {
+    <p class="col-nessun">{{ lang.t().collezione.noResults }}</p>
+  }
+</div>

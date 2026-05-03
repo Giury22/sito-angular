@@ -14,3 +14,10 @@ body {
   height: 100%;
   overflow-x: hidden;
 }
+
+/* Rimuove il margine inferiore dell'ultimo elemento in ogni pagina
+   così non si crea spazio vuoto prima del footer. */
+.app-main > *:last-child,
+.app-main > * > *:last-child {
+  margin-bottom: 0;
+}

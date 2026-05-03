@@ -1,34 +1,334 @@
-.page-card {
-  padding: 1.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 1.25rem;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-soft);
+﻿// ============================================================
+// CONTATTI — stili con prefisso .con-
+// Stesso approccio di biglietti (.big-): mobile-first,
+// CSS custom properties globali, full-bleed sections.
+// ============================================================
+
+// Titolo e descrizione pagina
+.con-title {
+  font-size: 2rem;
+  color: var(--color-text);
+  margin-bottom: 0.5rem;
 }
 
-.page-card p {
+.con-desc {
   color: var(--color-muted);
+  margin-bottom: 2rem;
   line-height: 1.7;
 }
 
-.contact-list {
-  display: grid;
-  gap: 1rem;
-  margin: 1.5rem 0 0;
+// ============================================================
+// SEZIONE GENERICA
+// ============================================================
+.con-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow-soft);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
 }
 
-.contact-list div {
+.con-section-title {
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+// ============================================================
+// SEZIONE 1: MAPPA
+// L'iframe e il wrapper usano il trucco padding-top per
+// mantenere l'aspect ratio 16:9 su tutti gli schermi.
+// ============================================================
+.con-map-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; // ratio 16:9
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: var(--color-border);
+}
+
+.con-map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+// ============================================================
+// SEZIONE 2: GRIGLIA INFO
+// Mobile: 1 colonna. Desktop: 2 colonne.
+// ============================================================
+.con-info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.con-info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
   padding: 1rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+}
+
+.con-info-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.con-info-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin-bottom: 0.2rem;
+}
+
+.con-info-val {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.con-info-link {
+  color: var(--color-accent);
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--color-accent-strong);
+  }
+}
+
+// ============================================================
+// SEZIONE 3: FORM
+// Mobile: 1 colonna. Desktop: 2 colonne.
+// .con-form-group--full occupa sempre l'intera riga.
+// ============================================================
+.con-errori {
+  background: #fdecea;
+  border: 1px solid #f44336;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.con-errore-item {
+  color: #c62828;
+  font-size: 0.9rem;
+  margin: 0.2rem 0;
+}
+
+.con-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.con-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.con-form-group--full {
+  grid-column: 1 / -1;
+}
+
+// Label simulata con <span> — gap a11y intenzionale
+.con-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+// ============================================================
+// INPUT, SELECT, TEXTAREA — stile coerente con biglietti
+// ============================================================
+.con-input,
+.con-select,
+.con-textarea {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 1rem;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+
+  &:focus {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+    border-color: var(--color-accent);
+  }
+}
+
+.con-textarea {
+  resize: vertical;
+  min-height: 8rem;
+  line-height: 1.6;
+}
+
+// ============================================================
+// RADIO GROUP
+// Gap a11y intenzionali: nessun fieldset/legend, nessun
+// aria-labelledby, span invece di label (no for/id).
+// ============================================================
+.con-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.con-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.con-radio {
+  accent-color: var(--color-accent);
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.con-radio-label {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+// ============================================================
+// CHECKBOX PRIVACY
+// Gap a11y intenzionali: span invece di label (no for/id),
+// nessun aria-required.
+// ============================================================
+.con-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.con-checkbox {
+  accent-color: var(--color-accent);
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+}
+
+.con-checkbox-label {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+// Card full-width nella griglia 2 colonne (parcheggio)
+.con-info-card--full {
+  grid-column: 1 / -1;
+}
+
+// ============================================================
+// BOTTONE INVIO
+// ============================================================
+.con-btn-invia {
+  padding: 0.75rem 1.5rem;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-accent-strong);
+  }
+
+  @media (min-width: 768px) {
+    justify-self: start;
+    padding: 0.75rem 2.5rem;
+  }
+}
+
+// ============================================================
+// TOAST DI CONFERMA
+// Stesso pattern del toast biglietti
+// ============================================================
+.con-toast-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.con-toast {
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 1rem;
-  background: #fff;
+  padding: 2rem 2.5rem;
+  max-width: 440px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
 }
 
-.contact-list dt {
-  font-family: Arial, sans-serif;
+.con-toast-titolo {
+  font-size: 1.3rem;
   font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
 }
 
-.contact-list dd {
-  margin: 0.4rem 0 0;
+.con-toast-msg {
+  color: var(--color-muted);
+  margin-bottom: 1.5rem;
+}
+
+.con-toast-btn {
+  padding: 0.6rem 2rem;
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-accent-strong);
+  }
 }

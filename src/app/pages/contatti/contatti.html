@@ -1,21 +1,297 @@
-<!-- SEZIONE CONTATTI -->
-<section class="page-card">
-  <h1>{{ lang.t().contatti.title }}</h1>
-  <p>{{ lang.t().contatti.description }}</p>
+﻿<!-- TITOLO PAGINA -->
+<h1 class="con-title">{{ lang.t().contatti.title }}</h1>
+<p class="con-desc">{{ lang.t().contatti.description }}</p>
 
-  <!-- LISTA CONTATTI -->
-  <dl class="contact-list">
-    <div>
-      <dt>{{ lang.t().contatti.email }}</dt>
-      <dd>info@museodellavespa.it</dd>
+<!-- ============================================================
+     SEZIONE 1: MAPPA
+     WIDGET nuovo: primo <iframe> del sito — embed Google Maps.
+     Gap a11y intenzionali: nessun title sull'iframe,
+     nessuna alternativa testuale per chi non carica la mappa.
+     ============================================================ -->
+<div class="con-section">
+  <h2 class="con-section-title">{{ lang.t().contatti.doveTitolo }}</h2>
+
+  <!-- WIDGET: iframe embed Google Maps -->
+  <div class="con-map-wrap">
+    <iframe
+      class="con-map"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2988.3!2d12.5274!3d41.8758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f61a7e30d8fe7%3A0x93b8b5aef4c23d96!2sVia%20Appia%20Nuova%2C%2042%2C%2000183%20Roma%20RM!5e0!3m2!1sit!2sit!4v1746268800000"
+      allowfullscreen
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+    ></iframe>
+  </div>
+</div>
+
+<!-- ============================================================
+     SEZIONE 2: INFO DI CONTATTO
+     Card con indirizzo, telefono, email, orari.
+     Gap a11y intenzionali: link email senza testo descrittivo,
+     nessun landmark region, nessun aria-label sulle icone.
+     ============================================================ -->
+<div class="con-section">
+  <h2 class="con-section-title">{{ lang.t().contatti.comeTitolo }}</h2>
+
+  <div class="con-info-grid">
+    <!-- Indirizzo -->
+    <div class="con-info-card">
+      <span class="con-info-icon">&#x1F4CD;</span>
+      <div>
+        <span class="con-info-label">{{ lang.t().contatti.indirizzo }}</span>
+        <span class="con-info-val">Via Appia Nuova 42, Roma</span>
+      </div>
     </div>
-    <div>
-      <dt>{{ lang.t().contatti.telefono }}</dt>
-      <dd>+39 000 1234567</dd>
+
+    <!-- Telefono -->
+    <div class="con-info-card">
+      <span class="con-info-icon">&#x1F4DE;</span>
+      <div>
+        <span class="con-info-label">{{ lang.t().contatti.telefono }}</span>
+        <!-- WIDGET: anchor tel — primo link tel: del sito -->
+        <a class="con-info-val con-info-link" href="tel:+390612345678">+39 06 1234567</a>
+      </div>
     </div>
-    <div>
-      <dt>{{ lang.t().contatti.indirizzo }}</dt>
-      <dd>Via Appia Nuova 42, Roma</dd>
+
+    <!-- Email -->
+    <div class="con-info-card">
+      <span class="con-info-icon">&#x2709;</span>
+      <div>
+        <span class="con-info-label">{{ lang.t().contatti.email }}</span>
+        <!-- WIDGET: anchor mailto — primo link mailto: del sito -->
+        <a class="con-info-val con-info-link" href="mailto:info@museodellavespa.it">
+          info@museodellavespa.it
+        </a>
+      </div>
     </div>
-  </dl>
-</section>
+
+    <!-- Orari -->
+    <div class="con-info-card">
+      <span class="con-info-icon">&#x1F552;</span>
+      <div>
+        <span class="con-info-label">{{ lang.t().contatti.orari }}</span>
+        <span class="con-info-val">{{ lang.t().contatti.orariVal }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SEZIONE 3: FORM DI CONTATTO
+     Widget nuovi rispetto al sito:
+       - input[type="text"]  nessun nome e cognome
+       - input[type="email"] email (nuovo tipo, keyboard mobile diversa)
+       - input[type="radio"] tipo visitatore (PRIMO radio del sito)
+       - select              oggetto richiesta
+       - textarea            messaggio (PRIMO textarea del sito)
+     Gap a11y intenzionali: span invece di label (nessun for/id),
+     nessun fieldset/legend attorno ai radio, nessun aria-required,
+     nessun aria-invalid, nessun aria-describedby per gli errori,
+     errori non annunciati con aria-live.
+     ============================================================ -->
+<div class="con-section">
+  <h2 class="con-section-title">{{ lang.t().contatti.formTitolo }}</h2>
+
+  <!-- ERRORI DI VALIDAZIONE -->
+  @if (errori().length > 0) {
+    <div class="con-errori">
+      @for (e of errori(); track e) {
+        <p class="con-errore-item">{{ e }}</p>
+      }
+    </div>
+  }
+
+  <div class="con-form">
+    <!-- WIDGET: input[type="text"] -->
+    <div class="con-form-group">
+      <span class="con-label">{{ lang.t().contatti.labelNome }}</span>
+      <input
+        type="text"
+        class="con-input"
+        [placeholder]="lang.t().contatti.placeholderNome"
+        [ngModel]="nome()"
+        (ngModelChange)="nome.set($event)"
+      />
+    </div>
+
+    <!-- WIDGET: input[type="email"] -->
+    <div class="con-form-group">
+      <span class="con-label">{{ lang.t().contatti.labelEmail }}</span>
+      <input
+        type="email"
+        class="con-input"
+        [placeholder]="lang.t().contatti.placeholderEmail"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
+      />
+    </div>
+
+    <!-- WIDGET: input[type="tel"] — primo nel sito, keyboard numerica mobile -->
+    <div class="con-form-group">
+      <span class="con-label">{{ lang.t().contatti.labelTelefonoForm }}</span>
+      <input
+        type="tel"
+        class="con-input"
+        [placeholder]="lang.t().contatti.placeholderTelefonoForm"
+        [ngModel]="telefonoForm()"
+        (ngModelChange)="telefonoForm.set($event)"
+      />
+    </div>
+
+    <!-- WIDGET: select -->
+    <div class="con-form-group con-form-group--full">
+      <span class="con-label">{{ lang.t().contatti.labelOggetto }}</span>
+      <select class="con-select" [ngModel]="oggetto()" (ngModelChange)="oggetto.set($event)">
+        <option value="">--</option>
+        <option value="info">{{ lang.t().contatti.oggettoInfo }}</option>
+        <option value="gruppi">{{ lang.t().contatti.oggettoGruppi }}</option>
+        <option value="mostre">{{ lang.t().contatti.oggettoMostre }}</option>
+        <option value="altro">{{ lang.t().contatti.oggettoAltro }}</option>
+      </select>
+    </div>
+
+    <!-- ============================================================
+         WIDGET: input[type="radio"] — PRIMO gruppo radio del sito.
+         Gap a11y intenzionali: nessun fieldset/legend,
+         nessun aria-labelledby, span invece di label (no for/id).
+         ============================================================ -->
+    <div class="con-form-group con-form-group--full">
+      <span class="con-label">{{ lang.t().contatti.labelTipo }}</span>
+      <div class="con-radio-group">
+        <div class="con-radio-row">
+          <input
+            type="radio"
+            class="con-radio"
+            id="radio-privato"
+            name="tipoVisitatore"
+            value="privato"
+            [ngModel]="tipoVisitatore()"
+            (ngModelChange)="tipoVisitatore.set($event)"
+          />
+          <span class="con-radio-label">{{ lang.t().contatti.tipoPrivato }}</span>
+        </div>
+
+        <div class="con-radio-row">
+          <input
+            type="radio"
+            class="con-radio"
+            id="radio-gruppo"
+            name="tipoVisitatore"
+            value="gruppo"
+            [ngModel]="tipoVisitatore()"
+            (ngModelChange)="tipoVisitatore.set($event)"
+          />
+          <span class="con-radio-label">{{ lang.t().contatti.tipoGruppo }}</span>
+        </div>
+
+        <div class="con-radio-row">
+          <input
+            type="radio"
+            class="con-radio"
+            id="radio-stampa"
+            name="tipoVisitatore"
+            value="stampa"
+            [ngModel]="tipoVisitatore()"
+            (ngModelChange)="tipoVisitatore.set($event)"
+          />
+          <span class="con-radio-label">{{ lang.t().contatti.tipoStampa }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIDGET: textarea — PRIMO textarea del sito -->
+    <div class="con-form-group con-form-group--full">
+      <span class="con-label">{{ lang.t().contatti.labelMessaggio }}</span>
+      <textarea
+        class="con-textarea"
+        rows="5"
+        [placeholder]="lang.t().contatti.placeholderMessaggio"
+        [ngModel]="messaggio()"
+        (ngModelChange)="messaggio.set($event)"
+      ></textarea>
+    </div>
+
+    <!-- ============================================================
+         WIDGET: input[type="checkbox"] — consenso privacy GDPR.
+         Diverso dai checkbox biglietti (boolean standalone, non
+         abbinato a un contatore numerico).
+         Gap a11y intenzionali: span invece di label (no for/id),
+         nessun aria-required, nessun aria-describedby.
+         ============================================================ -->
+    <div class="con-form-group con-form-group--full">
+      <div class="con-checkbox-row">
+        <input
+          type="checkbox"
+          class="con-checkbox"
+          id="privacy-check"
+          [ngModel]="privacyAccettata()"
+          (ngModelChange)="privacyAccettata.set($event)"
+        />
+        <span class="con-checkbox-label">
+          {{ lang.t().contatti.labelPrivacy }}
+          <a class="con-info-link" href="#" (click)="$event.preventDefault()">{{
+            lang.t().contatti.labelPrivacyLink
+          }}</a>
+        </span>
+      </div>
+    </div>
+
+    <!-- BOTTONE INVIO -->
+    <button type="button" class="con-btn-invia con-form-group--full" (click)="invia()">
+      {{ lang.t().contatti.btnInvia }}
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     SEZIONE 4: COME ARRIVARE
+     Tre card: metro, autobus, parcheggio.
+     Contenuto informativo, nessun widget interattivo.
+     ============================================================ -->
+<div class="con-section">
+  <h2 class="con-section-title">{{ lang.t().contatti.arrivoTitolo }}</h2>
+
+  <div class="con-info-grid">
+    <!-- Metro -->
+    <div class="con-info-card">
+      <span class="con-info-icon">&#x1F687;</span>
+      <div>
+        <span class="con-info-label">{{ lang.t().contatti.arrivoMetro }}</span>
+        <span class="con-info-val">{{ lang.t().contatti.arrivoMetroVal }}</span>
+      </div>
+    </div>
+
+    <!-- Autobus -->
+    <div class="con-info-card">
+      <span class="con-info-icon">&#x1F68C;</span>
+      <div>
+        <span class="con-info-label">{{ lang.t().contatti.arrivoAutobus }}</span>
+        <span class="con-info-val">{{ lang.t().contatti.arrivoAutobusVal }}</span>
+      </div>
+    </div>
+
+    <!-- Parcheggio -->
+    <div class="con-info-card con-info-card--full">
+      <span class="con-info-icon">&#x1F17F;&#xFE0F;</span>
+      <div>
+        <span class="con-info-label">{{ lang.t().contatti.arrivoParcheggio }}</span>
+        <span class="con-info-val">{{ lang.t().contatti.arrivoParcheggioVal }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TOAST DI CONFERMA
+     Gap a11y intenzionali: nessun role="dialog", nessun focus trap.
+     ============================================================ -->
+@if (toastVisibile()) {
+  <div class="con-toast-overlay" (click)="chiudiToast()">
+    <div class="con-toast" (click)="$event.stopPropagation()">
+      <p class="con-toast-titolo">{{ lang.t().contatti.toastTitolo }}</p>
+      <p class="con-toast-msg">{{ lang.t().contatti.toastMsg }}</p>
+      <button type="button" class="con-toast-btn" (click)="chiudiToast()">
+        {{ lang.t().contatti.toastChiudi }}
+      </button>
+    </div>
+  </div>
+}

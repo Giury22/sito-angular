@@ -1,0 +1,489 @@
+﻿<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Inventario Elementi - Museo della Vespa</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 24px;
+        color: #1f1b16;
+        background: #fff;
+      }
+      h1 {
+        font-size: 22px;
+        margin-bottom: 4px;
+      }
+      h2 {
+        font-size: 17px;
+        margin-top: 40px;
+        border-bottom: 2px solid #0f5c5c;
+        padding-bottom: 5px;
+        color: #0f5c5c;
+      }
+      p.meta {
+        color: #777;
+        font-size: 12px;
+        margin-bottom: 32px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0 28px;
+        font-size: 13px;
+      }
+      th {
+        background: #0f5c5c;
+        color: #fff;
+        padding: 8px 10px;
+        text-align: left;
+      }
+      td {
+        padding: 7px 10px;
+        border-bottom: 1px solid #e0e0e0;
+        vertical-align: top;
+      }
+      tr:nth-child(even) {
+        background: #f9f9f9;
+      }
+      code {
+        font-family: monospace;
+        background: #eee;
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-size: 12px;
+      }
+      .btn-back {
+        display: inline-block;
+        margin-bottom: 24px;
+        padding: 8px 18px;
+        background: #0f5c5c;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 13px;
+        font-family: Arial, sans-serif;
+      }
+      .btn-back:hover {
+        background: #0a4343;
+      }
+    </style>
+  </head>
+  <body>
+    <a href="/" class="btn-back">← Torna al sito</a>
+    <h1>Inventario Elementi - Museo della Vespa (Angular 21)</h1>
+    <p class="meta">4 pagine &middot; Bilingue IT/EN &middot; Maggio 2026</p>
+
+    <!-- ========== GLOBALI ========== -->
+    <h2>Elementi globali (presenti su tutte le pagine)</h2>
+    <table>
+      <tr>
+        <th>Elemento</th>
+        <th>Tag HTML</th>
+        <th>Posizione / Comportamento</th>
+      </tr>
+      <tr>
+        <td>Logo + nome museo</td>
+        <td><code>a[routerLink="/"]</code> + <code>img</code></td>
+        <td>Header. Click torna alla home e chiude il menu mobile.</td>
+      </tr>
+      <tr>
+        <td>Link di navigazione (&times;4)</td>
+        <td><code>a[routerLink]</code></td>
+        <td>
+          Header &lt;nav&gt;. Home, Collezione, Biglietti, Contatti. Classe attiva sulla voce
+          corrente.
+        </td>
+      </tr>
+      <tr>
+        <td>Interruttori lingua IT / EN</td>
+        <td><code>button</code> (&times;2)</td>
+        <td>
+          Header. Due istanze: una nella barra superiore (mobile), una nella nav (desktop). Cambiano
+          la lingua tramite LanguageService.
+        </td>
+      </tr>
+      <tr>
+        <td>Pulsante hamburger (mobile)</td>
+        <td><code>button</code></td>
+        <td>Header, visibile solo su mobile. Apre e chiude il menu di navigazione.</td>
+      </tr>
+      <tr>
+        <td>Breadcrumb</td>
+        <td><code>nav &gt; ol &gt; li &gt; a</code> + <code>span[aria-current="page"]</code></td>
+        <td>
+          Sotto l'header, visibile solo nelle pagine interne (non in Home). Mostra il percorso Home
+          &rsaquo; Pagina corrente.
+        </td>
+      </tr>
+      <tr>
+        <td>Logo + nome (footer)</td>
+        <td><code>img</code> + <code>p</code></td>
+        <td>Footer, colonna 1. Solo informativo, non cliccabile.</td>
+      </tr>
+      <tr>
+        <td>Orari di apertura (footer)</td>
+        <td><code>ul &gt; li</code></td>
+        <td>Footer, colonna 2. Testo statico.</td>
+      </tr>
+      <tr>
+        <td>Recapiti museo (footer)</td>
+        <td><code>ul &gt; li</code> (&times;3)</td>
+        <td>Footer, colonna 3. Indirizzo, telefono, email in formato testo statico.</td>
+      </tr>
+      <tr>
+        <td>Barra copyright</td>
+        <td><code>p</code></td>
+        <td>Footer, fondo pagina.</td>
+      </tr>
+      <tr>
+        <td>Pulsante "Torna in cima"</td>
+        <td><code>button</code> fisso</td>
+        <td>
+          Appare in basso a destra dopo 320px di scroll. Click porta in cima alla pagina con scroll
+          fluido.
+        </td>
+      </tr>
+      <tr>
+        <td>Cookie consent banner</td>
+        <td>
+          <code>div</code> fisso + <code>p</code> + <code>button</code> Accetta +
+          <code>button</code> Rifiuta
+        </td>
+        <td>
+          Appare in fondo alla pagina al primo accesso. Scompare dopo la scelta, che viene salvata
+          in <code>localStorage</code>.
+        </td>
+      </tr>
+    </table>
+
+    <!-- ========== HOME ========== -->
+    <h2>Home</h2>
+    <table>
+      <tr>
+        <th>Elemento</th>
+        <th>Tag HTML</th>
+        <th>Posizione / Comportamento</th>
+      </tr>
+      <tr>
+        <td>Banner informativo</td>
+        <td><code>div</code> + <code>button</code> (chiudi)</td>
+        <td>
+          In cima alla pagina. Mostra il titolo della mostra in corso. Il pulsante &times; lo chiude
+          e non riappare.
+        </td>
+      </tr>
+      <tr>
+        <td>Carosello immagini</td>
+        <td><code>img</code> + <code>button</code> Prev + <code>button</code> Next</td>
+        <td>Scorrimento automatico a intervalli. Frecce laterali per navigazione manuale.</td>
+      </tr>
+      <tr>
+        <td>Indicatori carosello (pallini)</td>
+        <td><code>button</code> (uno per slide)</td>
+        <td>
+          Sotto il carosello. Click salta direttamente alla slide corrispondente. Pallino attivo
+          evidenziato.
+        </td>
+      </tr>
+      <tr>
+        <td>Testo descrittivo del museo</td>
+        <td><code>p</code></td>
+        <td>Paragrafo bilingue con la presentazione del museo.</td>
+      </tr>
+      <tr>
+        <td>Pulsante "Ascolta la guida audio"</td>
+        <td><code>button</code></td>
+        <td>Toggle che mostra/nasconde il player audio sottostante.</td>
+      </tr>
+      <tr>
+        <td>Player audio</td>
+        <td><code>audio[controls]</code></td>
+        <td>
+          Appare solo dopo aver cliccato il pulsante toggle. Controlli nativi browser (play, pausa,
+          volume, barra avanzamento).
+        </td>
+      </tr>
+      <tr>
+        <td>Link "Prenota"</td>
+        <td><code>a[routerLink="/biglietti"]</code></td>
+        <td>CTA che porta alla pagina Biglietti.</td>
+      </tr>
+      <tr>
+        <td>Statistiche museo (&times;3)</td>
+        <td><code>div.stat &gt; span</code> (valore) + <code>span</code> (etichetta)</td>
+        <td>Tre blocchi affiancati: visitatori/anno, pezzi in collezione, anni di storia.</td>
+      </tr>
+      <tr>
+        <td>Recensioni visitatori (&times;3)</td>
+        <td>
+          <code>div.home-rec-card</code> con <code>span</code> stelle + <code>p</code> testo +
+          <code>p</code> autore
+        </td>
+        <td>
+          Sotto le statistiche. Tre card con valutazione a stelle (1-5), testo bilingue, nome e
+          data. Solo informativo.
+        </td>
+      </tr>
+    </table>
+
+    <!-- ========== COLLEZIONE ========== -->
+    <h2>Collezione</h2>
+    <table>
+      <tr>
+        <th>Elemento</th>
+        <th>Tag HTML</th>
+        <th>Posizione / Comportamento</th>
+      </tr>
+      <tr>
+        <td>Player video</td>
+        <td><code>video[controls]</code></td>
+        <td>In cima alla pagina. Filmato introduttivo del museo. Controlli nativi browser.</td>
+      </tr>
+      <tr>
+        <td>Campo ricerca</td>
+        <td><code>input[type="search"]</code></td>
+        <td>Filtra le card in tempo reale mentre si digita.</td>
+      </tr>
+      <tr>
+        <td>Filtri chip per decade (&times;3)</td>
+        <td><code>button</code> (1960s, 1970s, 1980s)</td>
+        <td>
+          Filtrano le card per decade di produzione. Un chip attivo alla volta; ri-cliccando si
+          deseleziona.
+        </td>
+      </tr>
+      <tr>
+        <td>Slider anno di produzione</td>
+        <td><code>input[type="range"]</code></td>
+        <td>
+          Mostra solo i modelli prodotti fino all'anno selezionato. Min 1960, max 1980,
+          aggiornamento in tempo reale.
+        </td>
+      </tr>
+      <tr>
+        <td>Card modello Vespa (&times;7)</td>
+        <td><code>div.col-card</code></td>
+        <td>Griglia di 7 card, una per modello. Contiene gli elementi qui sotto.</td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&bull; Fotografia modello</td>
+        <td><code>img</code></td>
+        <td>Cliccabile per aprire il lightbox. Cursore zoom-in.</td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&bull; Nome, anno, cilindrata</td>
+        <td><code>p</code> (&times;2)</td>
+        <td>Intestazione della card sempre visibile.</td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&bull; Toggle switch "Ulteriori info"</td>
+        <td><code>button</code></td>
+        <td>
+          Apre/chiude il pannello dei dettagli. Pi&ugrave; card possono essere aperte
+          contemporaneamente.
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&bull; Descrizione + dati tecnici</td>
+        <td><code>p</code> (&times;2)</td>
+        <td>Visibili solo a card aperta. Testo bilingue (IT/EN).</td>
+      </tr>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;&bull; Link Wikipedia</td>
+        <td><code>a[target="_blank"]</code></td>
+        <td>Visibile solo a card aperta. Apre Wikipedia in nuova scheda.</td>
+      </tr>
+      <tr>
+        <td>Messaggio "Nessun risultato"</td>
+        <td><code>p</code></td>
+        <td>Compare quando nessuna card corrisponde ai filtri attivi.</td>
+      </tr>
+      <tr>
+        <td>Lightbox immagine</td>
+        <td><code>div</code> overlay + <code>img</code> + <code>button</code> chiudi</td>
+        <td>
+          Click sulla foto apre un overlay fullscreen con l'immagine ingrandita, nome e dati del
+          modello. Tasto ESC chiude.
+        </td>
+      </tr>
+    </table>
+
+    <!-- ========== BIGLIETTI ========== -->
+    <h2>Biglietti</h2>
+    <table>
+      <tr>
+        <th>Elemento</th>
+        <th>Tag HTML</th>
+        <th>Posizione / Comportamento</th>
+      </tr>
+      <tr>
+        <td>Tabella prezzi</td>
+        <td><code>table</code> con <code>caption</code>, <code>thead</code>, <code>tbody</code></td>
+        <td>3 righe: Intero, Ridotto, Gratuito. Colonne: tipo, descrizione, prezzo.</td>
+      </tr>
+      <tr>
+        <td>Navigazione mese (Prev / Next)</td>
+        <td><code>button</code> (&times;2) + <code>span</code> titolo mese</td>
+        <td>Scorre il calendario al mese precedente o successivo.</td>
+      </tr>
+      <tr>
+        <td>Calendario disponibilit&agrave;</td>
+        <td>Griglia <code>div</code> a 7 colonne CSS</td>
+        <td>
+          Giorni del mese con stati: disponibile (verde), quasi esaurito (arancio), esaurito
+          (rosso), chiuso (grigio). Click su giorno disponibile lo seleziona.
+        </td>
+      </tr>
+      <tr>
+        <td>Legenda colori calendario</td>
+        <td><code>div</code> con <code>span</code> (&times;4)</td>
+        <td>Sotto il calendario. Spiega i colori degli stati.</td>
+      </tr>
+      <tr>
+        <td>Input data nativa</td>
+        <td><code>input[type="date"]</code></td>
+        <td>
+          Sincronizzato col calendario custom. Attributi <code>min</code> e
+          <code>max</code> impostati.
+        </td>
+      </tr>
+      <tr>
+        <td>Avviso data non disponibile</td>
+        <td><code>span</code> inline</td>
+        <td>Compare quando si sceglie una data chiusa o esaurita tramite il picker nativo.</td>
+      </tr>
+      <tr>
+        <td>Select fascia oraria</td>
+        <td><code>select</code></td>
+        <td>4 opzioni di orario (10-12, 12-14, 14-16, 16-18).</td>
+      </tr>
+      <tr>
+        <td>Checkbox + contatore quantit&agrave; (&times;3)</td>
+        <td><code>input[type="checkbox"]</code> + <code>input[type="number"]</code></td>
+        <td>
+          Una riga per categoria (Intero, Ridotto, Gratuito). Il contatore appare solo se la
+          checkbox &egrave; spuntata.
+        </td>
+      </tr>
+      <tr>
+        <td>Totale dinamico</td>
+        <td><code>div</code> con <code>strong</code></td>
+        <td>
+          Totale in euro. Appare solo con almeno una categoria selezionata, aggiornamento in tempo
+          reale.
+        </td>
+      </tr>
+      <tr>
+        <td>Pulsante "Prenota"</td>
+        <td><code>button</code></td>
+        <td>Valida il form e, se corretto, mostra il toast di conferma.</td>
+      </tr>
+      <tr>
+        <td>Toast di conferma prenotazione</td>
+        <td><code>div</code> overlay</td>
+        <td>
+          Overlay che copre la pagina con titolo, messaggio di conferma e pulsante "Chiudi" che
+          resetta il form.
+        </td>
+      </tr>
+    </table>
+
+    <!-- ========== CONTATTI ========== -->
+    <h2>Contatti</h2>
+    <table>
+      <tr>
+        <th>Elemento</th>
+        <th>Tag HTML</th>
+        <th>Posizione / Comportamento</th>
+      </tr>
+      <tr>
+        <td>Mappa Google Maps</td>
+        <td><code>iframe</code></td>
+        <td>Sezione "Dove ci troviamo". Embed della posizione del museo.</td>
+      </tr>
+      <tr>
+        <td>Card indirizzo</td>
+        <td><code>div</code> con icona + testo</td>
+        <td>Sezione "Come contattarci". Solo informativo.</td>
+      </tr>
+      <tr>
+        <td>Link telefono</td>
+        <td><code>a[href="tel:"]</code></td>
+        <td>Su mobile avvia la chiamata diretta al numero del museo.</td>
+      </tr>
+      <tr>
+        <td>Link email</td>
+        <td><code>a[href="mailto:"]</code></td>
+        <td>Apre il client di posta predefinito con l'indirizzo del museo.</td>
+      </tr>
+      <tr>
+        <td>Card orari</td>
+        <td><code>div</code> con icona + testo</td>
+        <td>Sezione "Come contattarci". Solo informativo.</td>
+      </tr>
+      <tr>
+        <td>Input nome</td>
+        <td><code>input[type="text"]</code></td>
+        <td>Form di contatto. Campo obbligatorio.</td>
+      </tr>
+      <tr>
+        <td>Input email</td>
+        <td><code>input[type="email"]</code></td>
+        <td>Form di contatto. Validazione formato email. Su mobile apre tastiera con @.</td>
+      </tr>
+      <tr>
+        <td>Input telefono</td>
+        <td><code>input[type="tel"]</code></td>
+        <td>Form di contatto. Campo opzionale. Su mobile apre tastiera numerica.</td>
+      </tr>
+      <tr>
+        <td>Select oggetto richiesta</td>
+        <td><code>select</code></td>
+        <td>Form di contatto. 4 opzioni: Info generali, Gruppi scolastici, Mostre, Altro.</td>
+      </tr>
+      <tr>
+        <td>Gruppo radio (tipo visitatore)</td>
+        <td><code>input[type="radio"]</code> (&times;3)</td>
+        <td>Form di contatto. 3 opzioni: Privato, Gruppo, Stampa. Una sola selezione possibile.</td>
+      </tr>
+      <tr>
+        <td>Textarea messaggio</td>
+        <td><code>textarea</code></td>
+        <td>Form di contatto. Campo obbligatorio. Ridimensionabile verticalmente dall'utente.</td>
+      </tr>
+      <tr>
+        <td>Checkbox privacy GDPR</td>
+        <td><code>input[type="checkbox"]</code></td>
+        <td>Form di contatto. Obbligatoria per inviare. Contiene link alla privacy policy.</td>
+      </tr>
+      <tr>
+        <td>Link privacy policy</td>
+        <td><code>a[href="#"]</code></td>
+        <td>Inline nella label della checkbox privacy.</td>
+      </tr>
+      <tr>
+        <td>Pulsante "Invia"</td>
+        <td><code>button</code></td>
+        <td>Valida il form e, se corretto, mostra il toast di conferma.</td>
+      </tr>
+      <tr>
+        <td>Card "Come arrivare" (&times;3)</td>
+        <td><code>div</code> con icona + testo</td>
+        <td>Tre card informative: Metro, Autobus, Parcheggio. Nessun elemento interattivo.</td>
+      </tr>
+      <tr>
+        <td>Toast di conferma invio</td>
+        <td><code>div</code> overlay</td>
+        <td>
+          Stesso pattern del toast in Biglietti. Overlay con titolo, messaggio e pulsante chiudi che
+          resetta il form.
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

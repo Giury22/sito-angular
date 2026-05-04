@@ -44,6 +44,7 @@ const TRANSLATIONS = {
       stat2Label: "Visitatori l'anno",
       stat3Value: '2008',
       stat3Label: 'Anno di apertura',
+      recTitolo: 'Cosa dicono i visitatori',
     },
     // COLLEZIONE
     collezione: {
@@ -54,6 +55,7 @@ const TRANSLATIONS = {
       lessInfo: 'Meno info',
       wikiLink: 'Tutte le info ↗',
       noResults: 'Nessun modello trovato.',
+      sliderLabel: 'Anno di produzione (fino a):',
     },
     // BIGLIETTI
     biglietti: {
@@ -173,6 +175,13 @@ const TRANSLATIONS = {
       email: 'info@museodellavespa.it',
       copyright: '© 2026 Museo della Vespa. Tutti i diritti riservati.',
     },
+    // COOKIE
+    cookie: {
+      testo: 'Questo sito usa cookie tecnici per migliorare la tua esperienza. Leggi la nostra',
+      linkTesto: 'cookie policy',
+      accetta: 'Accetta',
+      rifiuta: 'Rifiuta',
+    },
   },
 
   en: {
@@ -214,6 +223,7 @@ const TRANSLATIONS = {
       stat2Label: 'Visitors per year',
       stat3Value: '2008',
       stat3Label: 'Year of opening',
+      recTitolo: 'What visitors say',
     },
     // COLLEZIONE
     collezione: {
@@ -224,6 +234,7 @@ const TRANSLATIONS = {
       lessInfo: 'Less info',
       wikiLink: 'All info ↗',
       noResults: 'No models found.',
+      sliderLabel: 'Production year (up to):',
     },
     // BIGLIETTI
     biglietti: {
@@ -340,6 +351,13 @@ const TRANSLATIONS = {
       phone: '+39 06 1234567',
       email: 'info@museodellavespa.it',
       copyright: '© 2026 Vespa Museum. All rights reserved.',
+    },
+    // COOKIE
+    cookie: {
+      testo: 'This site uses technical cookies to improve your experience. Read our',
+      linkTesto: 'cookie policy',
+      accetta: 'Accept',
+      rifiuta: 'Decline',
     },
   },
 };

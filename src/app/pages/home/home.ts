@@ -10,6 +10,39 @@ const SLIDES = [
   { src: 'home/carosello4.png', alt: 'Foto museo 4' },
 ];
 
+const RECENSIONI = [
+  {
+    id: 1,
+    autore: 'Marco T.',
+    stelle: 5,
+    data: 'Aprile 2026',
+    testo_it:
+      'Posto meraviglioso. I modelli esposti sono in condizioni perfette e le schede informative sono molto dettagliate. Tornerò sicuramente!',
+    testo_en:
+      'Wonderful place. The exhibited models are in perfect condition and the information cards are very detailed. I will definitely be back!',
+  },
+  {
+    id: 2,
+    autore: 'Sophie L.',
+    stelle: 5,
+    data: 'Marzo 2026',
+    testo_it:
+      'Incredibile collezione. Anche se non sono una grande appassionata di moto, la storia di ogni modello mi ha affascinato.',
+    testo_en:
+      "Incredible collection. Even though I'm not a big motorbike fan, the history behind each model fascinated me.",
+  },
+  {
+    id: 3,
+    autore: 'Giulia R.',
+    stelle: 4,
+    data: 'Febbraio 2026',
+    testo_it:
+      "Visita molto piacevole, ottima guida audio. Manca solo un piccolo bar o caffetteria all'interno.",
+    testo_en:
+      'Very enjoyable visit, great audio guide. The only thing missing is a small café inside.',
+  },
+];
+
 @Component({
   selector: 'app-home',
   imports: [RouterLink],
@@ -20,6 +53,7 @@ export class Home {
   lang = inject(LanguageService);
 
   slides = SLIDES;
+  recensioni = RECENSIONI;
   indiceAttivo = signal(0);
 
   // Traccia audio

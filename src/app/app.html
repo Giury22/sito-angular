@@ -3,9 +3,63 @@
 <div class="app-shell">
   <app-header></app-header>
 
+  <!-- BREADCRUMB: visibile solo nelle pagine interne (non in Home) -->
+  @if (breadcrumb().length > 1) {
+    <nav class="app-breadcrumb" aria-label="Percorso di navigazione">
+      <ol class="app-bc-list">
+        @for (crumb of breadcrumb(); track crumb.url; let last = $last) {
+          <li class="app-bc-item">
+            @if (!last) {
+              <a class="app-bc-link" [href]="crumb.url">{{ crumb.label }}</a>
+              <span class="app-bc-sep" aria-hidden="true">›</span>
+            } @else {
+              <span class="app-bc-current" aria-current="page">{{ crumb.label }}</span>
+            }
+          </li>
+        }
+      </ol>
+    </nav>
+  }
+
   <main id="contenuto-principale" class="app-main">
     <router-outlet></router-outlet>
   </main>
 
   <app-footer></app-footer>
 </div>
+
+<!-- BACK TO TOP -->
+@if (mostraTopBtn()) {
+  <button type="button" class="app-top-btn" (click)="scrollTop()" title="Torna in cima">
+    &#8679;
+  </button>
+}
+
+<!-- COOKIE BANNER -->
+@if (!cookieAccettati()) {
+  <div class="app-cookie-bar">
+    <p class="app-cookie-testo">
+      {{ lang.t().cookie.testo }}
+      <a href="#" class="app-cookie-link" (click)="$event.preventDefault()">{{
+        lang.t().cookie.linkTesto
+      }}</a
+      >.
+    </p>
+    <div class="app-cookie-azioni">
+      <button
+        type="button"
+        class="app-cookie-btn app-cookie-btn--rifiuta"
+        (click)="rifiutaCookie()"
+      >
+        {{ lang.t().cookie.rifiuta }}
+      </button>
+      <button
+        type="button"
+        class="app-cookie-btn app-cookie-btn--accetta"
+        (click)="accettaCookie()"
+      >
+        {{ lang.t().cookie.accetta }}
+      </button>
+    </div>
+  </div>
+}

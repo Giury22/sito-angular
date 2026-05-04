@@ -74,3 +74,23 @@
     <span class="stat-label">{{ lang.t().home.stat3Label }}</span>
   </div>
 </div>
+
+<!-- RECENSIONI VISITATORI -->
+<div class="home-recensioni">
+  <h2 class="home-rec-titolo">{{ lang.t().home.recTitolo }}</h2>
+  <div class="home-rec-grid">
+    @for (r of recensioni; track r.id) {
+      <div class="home-rec-card">
+        <div class="home-rec-stelle">
+          @for (s of [1, 2, 3, 4, 5]; track s) {
+            <span class="home-rec-stella" [class.home-rec-stella--piena]="s <= r.stelle"
+              >&#9733;</span
+            >
+          }
+        </div>
+        <p class="home-rec-testo">"{{ lang.currentLang() === 'it' ? r.testo_it : r.testo_en }}"</p>
+        <p class="home-rec-autore">— {{ r.autore }}, {{ r.data }}</p>
+      </div>
+    }
+  </div>
+</div>

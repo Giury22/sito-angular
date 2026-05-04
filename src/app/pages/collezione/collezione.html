@@ -1,4 +1,4 @@
-<!-- TITOLO PAGINA -->
+﻿<!-- TITOLO PAGINA -->
 <h1 class="col-title">{{ lang.t().collezione.title }}</h1>
 
 <!-- VIDEO DEL MUSEO -->
@@ -19,12 +19,49 @@
   <span class="col-cerca-icona" aria-hidden="true">&#128269;</span>
 </div>
 
+<!-- FILTRI DECADE (chip) -->
+<div class="col-filtri">
+  @for (d of decadi; track d) {
+    <button
+      type="button"
+      class="col-chip"
+      [class.col-chip--attivo]="filtroDecade() === d"
+      (click)="toggleDecade(d)"
+    >
+      {{ d }}s
+    </button>
+  }
+</div>
+
+<!-- SLIDER ANNO DI PRODUZIONE -->
+<div class="col-slider-wrap">
+  <span class="col-slider-label">{{ lang.t().collezione.sliderLabel }}</span>
+  <div class="col-slider-row">
+    <span class="col-slider-val">{{ annoMin }}</span>
+    <input
+      type="range"
+      class="col-slider"
+      [min]="annoMin"
+      [max]="annoMax"
+      [ngModel]="sliderAnno()"
+      (ngModelChange)="sliderAnno.set(+$event)"
+    />
+    <span class="col-slider-val col-slider-val--max">&#8804; {{ sliderAnno() }}</span>
+  </div>
+</div>
+
 <!-- GRIGLIA CARD MODELLI -->
 <div class="col-grid">
   @for (modello of modelliVisibili(); track modello.id) {
     <div class="col-card" [class.col-card--aperta]="isAperta(modello.id)">
-      <!-- FOTO -->
-      <img class="col-card-img" [src]="modello.img" [alt]="modello.nome" loading="lazy" />
+      <!-- FOTO: cliccabile per aprire lightbox -->
+      <img
+        class="col-card-img col-card-img--zoom"
+        [src]="modello.img"
+        [alt]="modello.nome"
+        loading="lazy"
+        (click)="apriLightbox(modello)"
+      />
 
       <!-- CORPO CARD -->
       <div class="col-card-body">
@@ -65,3 +102,17 @@
     <p class="col-nessun">{{ lang.t().collezione.noResults }}</p>
   }
 </div>
+
+<!-- LIGHTBOX -->
+@if (lightboxModello()) {
+  <div class="col-lb-overlay" (click)="chiudiLightbox()">
+    <div class="col-lb-box" (click)="$event.stopPropagation()">
+      <button type="button" class="col-lb-chiudi" (click)="chiudiLightbox()">&#10005;</button>
+      <img class="col-lb-img" [src]="lightboxModello()!.img" [alt]="lightboxModello()!.nome" />
+      <div class="col-lb-info">
+        <p class="col-lb-nome">{{ lightboxModello()!.nome }}</p>
+        <p class="col-lb-meta">{{ lightboxModello()!.anno }} &middot; {{ lightboxModello()!.cilindrata }} &middot; {{ lightboxModello()!.motore }}</p>
+      </div>
+    </div>
+  </div>
+}

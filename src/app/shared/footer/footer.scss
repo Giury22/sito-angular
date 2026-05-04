@@ -73,6 +73,20 @@
   margin: 0;
 }
 
+.footer-report-link {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.68rem;
+  color: #1f1b16;
+  text-decoration: underline;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.footer-report-link:hover {
+  opacity: 1;
+}
+
 /* DESKTOP: tre colonne affiancate */
 @media (min-width: 768px) {
   .footer-body {

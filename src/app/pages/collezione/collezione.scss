@@ -197,6 +197,139 @@
   padding: 1rem 0;
 }
 
+/* FILTRI CHIP */
+.col-filtri {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.col-chip {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid var(--color-accent);
+  background: none;
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.18s,
+    color 0.18s;
+}
+
+.col-chip--attivo {
+  background: var(--color-accent);
+  color: #fff;
+}
+
+/* SLIDER ANNO */
+.col-slider-wrap {
+  margin-bottom: 1.75rem;
+}
+
+.col-slider-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin-bottom: 0.4rem;
+}
+
+.col-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.col-slider {
+  flex: 1;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+.col-slider-val {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  white-space: nowrap;
+  min-width: 2.5rem;
+}
+
+.col-slider-val--max {
+  font-weight: 700;
+  color: var(--color-accent);
+  min-width: 4rem;
+}
+
+/* FOTO CARD: cursore zoom */
+.col-card-img--zoom {
+  cursor: zoom-in;
+}
+
+/* LIGHTBOX OVERLAY */
+.col-lb-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.col-lb-box {
+  position: relative;
+  background: var(--color-surface);
+  border-radius: 1rem;
+  overflow: hidden;
+  max-width: 720px;
+  width: 100%;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+.col-lb-chiudi {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 2;
+}
+
+.col-lb-img {
+  width: 100%;
+  max-height: 65vh;
+  object-fit: contain;
+  display: block;
+  background: #000;
+}
+
+.col-lb-info {
+  padding: 0.9rem 1.1rem;
+}
+
+.col-lb-nome {
+  font-family: Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+  color: var(--color-text);
+}
+
+.col-lb-meta {
+  font-size: 0.82rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
 /* DESKTOP */
 @media (min-width: 768px) {
   .col-title {

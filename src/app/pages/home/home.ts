@@ -55,6 +55,7 @@ export class Home {
   slides = SLIDES;
   recensioni = RECENSIONI;
   indiceAttivo = signal(0);
+  imgCaricata = signal(true);
 
   // Traccia audio
   audioAperto = signal(false);
@@ -78,16 +79,19 @@ export class Home {
 
   // Vai alla slide precedente
   precedente() {
+    this.imgCaricata.set(false);
     this.indiceAttivo.update((i) => (i === 0 ? this.slides.length - 1 : i - 1));
   }
 
   // Vai alla slide successiva
   successiva() {
+    this.imgCaricata.set(false);
     this.indiceAttivo.update((i) => (i === this.slides.length - 1 ? 0 : i + 1));
   }
 
   // Vai direttamente a una slide dal pallino
   vaiA(indice: number) {
+    this.imgCaricata.set(false);
     this.indiceAttivo.set(indice);
   }
 }

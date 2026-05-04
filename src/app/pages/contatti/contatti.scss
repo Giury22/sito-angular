@@ -44,21 +44,21 @@
 // mantenere l'aspect ratio 16:9 su tutti gli schermi.
 // ============================================================
 .con-map-wrap {
-  position: relative;
   width: 100%;
-  padding-top: 56.25%; // ratio 16:9
   border-radius: 0.75rem;
   overflow: hidden;
   background: var(--color-border);
+  // -webkit-mask-image fix iOS: forza un nuovo stacking context
+  // senza bloccare i touch events sull'iframe
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
 
 .con-map {
-  position: absolute;
-  top: 0;
-  left: 0;
+  display: block;
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 9;
   border: none;
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 // ============================================================

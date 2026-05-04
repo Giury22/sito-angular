@@ -261,6 +261,9 @@ export class Biglietti {
   // --- WIDGET: toast / popup di conferma ---
   toastVisibile = signal(false);
 
+  // --- Campo email prenotazione ---
+  emailUtente = signal('');
+
   // Errori di validazione
   errori = signal<string[]>([]);
 
@@ -280,6 +283,10 @@ export class Biglietti {
     if (!this.interoAttivo() && !this.ridottoAttivo() && !this.gratuitoAttivo()) {
       err.push(t.erroreQta);
     }
+    const emailRaw = this.emailUtente().trim();
+    if (!emailRaw || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailRaw)) {
+      err.push(t.erroreEmail);
+    }
     this.errori.set(err);
     if (err.length > 0) return;
     this.toastVisibile.set(true);
@@ -289,6 +296,7 @@ export class Biglietti {
     this.toastVisibile.set(false);
     this.dataVisita.set('');
     this.orarioScelto.set('');
+    this.emailUtente.set('');
     this.interoAttivo.set(false);
     this.ridottoAttivo.set(false);
     this.gratuitoAttivo.set(false);

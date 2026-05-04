@@ -11,10 +11,17 @@
 <!-- CAROSELLO FOTO -->
 <section class="carosello">
   <div class="carosello-frame">
+    @if (!imgCaricata()) {
+      <div class="carosello-spinner" aria-hidden="true">
+        <span class="carosello-spinner-ring"></span>
+      </div>
+    }
     <img
       [src]="slides[indiceAttivo()].src"
       [alt]="slides[indiceAttivo()].alt"
       class="carosello-img"
+      [class.carosello-img--hidden]="!imgCaricata()"
+      (load)="imgCaricata.set(true)"
     />
     <!-- frecce di navigazione -->
     <button class="carosello-btn carosello-btn--prev" type="button" (click)="precedente()">

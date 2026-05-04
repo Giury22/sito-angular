@@ -263,6 +263,20 @@
       </div>
     }
 
+    <!-- EMAIL PRENOTAZIONE -->
+    <div class="big-form-group">
+      <span class="big-label">{{ lang.t().biglietti.labelEmail }}</span>
+      <input
+        class="big-input"
+        type="email"
+        inputmode="email"
+        autocomplete="email"
+        [placeholder]="lang.t().biglietti.placeholderEmail"
+        [ngModel]="emailUtente()"
+        (ngModelChange)="emailUtente.set($event)"
+      />
+    </div>
+
     <!-- BOTTONE PRENOTAZIONE -->
     <button type="button" class="big-btn-prenota" (click)="prenota()">
       {{ lang.t().biglietti.btnPrenota }}

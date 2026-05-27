@@ -141,73 +141,59 @@
 }
 
 /* COOKIE BANNER */
-.app-cookie-bar {
+.cookie-banner {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  background: var(--color-text);
-  color: #f5f0e8;
-  padding: 1rem 1.5rem;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: 1rem 1.25rem;
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  z-index: 900;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
-}
-
-.app-cookie-testo {
-  margin: 0;
-  font-size: 0.88rem;
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
-}
-
-.app-cookie-link {
-  color: #a8d4d4;
-  text-decoration: underline;
-}
-
-.app-cookie-azioni {
-  display: flex;
-  gap: 0.75rem;
   flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  z-index: 500;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.06);
 }
 
-.app-cookie-btn {
-  padding: 0.5rem 1.25rem;
-  border-radius: 0.5rem;
-  font-size: 0.88rem;
-  font-family: Arial, sans-serif;
-  font-weight: 600;
+.cookie-testo {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.cookie-azioni {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.cookie-btn {
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
   cursor: pointer;
-  border: 2px solid transparent;
-  transition: background 0.18s;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  transition: background 0.15s, color 0.15s;
 }
 
-.app-cookie-btn--accetta {
+.cookie-btn--accetta {
   background: var(--color-accent);
+  border-color: var(--color-accent);
   color: #fff;
 }
 
-.app-cookie-btn--accetta:hover {
+.cookie-btn--accetta:hover {
   background: var(--color-accent-strong);
 }
 
-.app-cookie-btn--rifiuta {
-  background: transparent;
-  border-color: #a8a098;
-  color: #f5f0e8;
+.cookie-btn--rifiuta {
+  background: none;
+  color: var(--color-muted);
 }
 
-.app-cookie-btn--rifiuta:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-@media (min-width: 768px) {
-  .app-cookie-bar {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
+.cookie-btn--rifiuta:hover {
+  background: var(--color-bg);
 }

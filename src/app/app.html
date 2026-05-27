@@ -37,27 +37,15 @@
 
 <!-- COOKIE BANNER -->
 @if (!cookieAccettati()) {
-  <div class="app-cookie-bar">
-    <p class="app-cookie-testo">
-      {{ lang.t().cookie.testo }}
-      <a href="#" class="app-cookie-link" (click)="$event.preventDefault()">{{
-        lang.t().cookie.linkTesto
-      }}</a
-      >.
+  <div class="cookie-banner">
+    <p class="cookie-testo">
+      Questo sito usa cookie tecnici per migliorare la tua esperienza.
     </p>
-    <div class="app-cookie-azioni">
-      <button
-        type="button"
-        class="app-cookie-btn app-cookie-btn--rifiuta"
-        (click)="rifiutaCookie()"
-      >
+    <div class="cookie-azioni">
+      <button type="button" class="cookie-btn cookie-btn--rifiuta" (click)="accettaCookie(false)">
         {{ lang.t().cookie.rifiuta }}
       </button>
-      <button
-        type="button"
-        class="app-cookie-btn app-cookie-btn--accetta"
-        (click)="accettaCookie()"
-      >
+      <button type="button" class="cookie-btn cookie-btn--accetta" (click)="accettaCookie(true)">
         {{ lang.t().cookie.accetta }}
       </button>
     </div>

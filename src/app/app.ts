@@ -18,18 +18,10 @@ export class App {
   protected readonly title = signal('museo-accessibilita');
 
   // ---- Cookie banner ----
-  cookieAccettati = signal(
-    typeof localStorage !== 'undefined' && localStorage.getItem('cookie-consent') === 'ok',
-  );
+  cookieAccettati = signal(false);
 
-  accettaCookie() {
-    localStorage.setItem('cookie-consent', 'ok');
-    this.cookieAccettati.set(true);
-  }
-
-  rifiutaCookie() {
-    localStorage.setItem('cookie-consent', 'rifiutati');
-    this.cookieAccettati.set(true); // banner sparisce in entrambi i casi
+  accettaCookie(valore: boolean): void {
+    this.cookieAccettati.set(valore);
   }
 
   // ---- Back to top ----

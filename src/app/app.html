@@ -38,9 +38,7 @@
 <!-- COOKIE BANNER -->
 @if (!cookieAccettati()) {
   <div class="cookie-banner">
-    <p class="cookie-testo">
-      Questo sito usa cookie tecnici per migliorare la tua esperienza.
-    </p>
+    <p class="cookie-testo">Questo sito usa cookie tecnici per migliorare la tua esperienza.</p>
     <div class="cookie-azioni">
       <button type="button" class="cookie-btn cookie-btn--rifiuta" (click)="accettaCookie(false)">
         {{ lang.t().cookie.rifiuta }}

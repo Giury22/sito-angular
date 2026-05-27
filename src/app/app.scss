@@ -176,7 +176,9 @@
   font-size: 0.85rem;
   font-weight: 600;
   padding: 0.4rem 1rem;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
 }
 
 .cookie-btn--accetta {

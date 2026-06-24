@@ -1,0 +1,1180 @@
+Capitolo 3
+
+Metodologia
+
+3.1  Panoramica del disegno della ricerca
+
+La metodologia adottata in questa tesi è progettata per rispondere alle tre
+domande di ricerca enunciate nel Capitolo 1 in modo sistematico e tecnicamente
+fondato. In particolare, deve produrre evidenze sufficientemente dettagliate da
+rivelare differenze a livello di componente — e non soltanto a livello di punteggi
+aggregati di pagina — e sufficientemente rigorose da supportare confronti equi,
+riproducibili e non confusi da differenze nel contenuto dell'applicazione, nell'ambito
+funzionale o nell'intenzione dello sviluppatore.
+
+Per soddisfare questi requisiti, lo studio è strutturato come un confronto
+empirico controllato tra due implementazioni equivalenti della stessa applicazione
+web. Una implementazione è realizzata con Angular, l'altra con React. Entrambe
+le implementazioni realizzano lo stesso insieme di pagine, scenari di interazione e
+componenti dell'interfaccia utente. Il contenuto, l'architettura dell'informazione e il
+comportamento visibile delle due applicazioni sono mantenuti il più possibile uguali,
+in modo che le eventuali differenze di accessibilità che emergono possano essere
+attribuite a scelte implementative specifiche del framework, e non a differenze in
+ciò che è stato costruito.
+
+È importante precisare fin da subito l'oggetto della valutazione. Questo studio
+non si propone di misurare il livello assoluto di accessibilità del sito del museo
+nella sua totalità, bensì di confrontare come Angular e React influenzano
+l'accessibilità tecnica dell'interfaccia. Rientrano in questa categoria tutti gli
+aspetti di accessibilità la cui soddisfazione dipende da come il framework
+media la costruzione dell'interfaccia: la semantica degli elementi generati,
+la gestione del focus, la navigabilità da tastiera, la corretta associazione
+tra controlli e etichette nei moduli, l'esposizione degli stati interattivi
+tramite attributi ARIA, e l'annuncio degli aggiornamenti dinamici. Sono
+esclusivamente questi aspetti che possono differire tra un'implementazione
+Angular e una React della stessa applicazione.
+
+Restano fuori dal perimetro comparativo gli aspetti di accessibilità che
+dipendono invece da scelte di design o di contenuto condivise da entrambe
+le implementazioni: la palette di colori e i relativi rapporti di contrasto,
+la qualità semantica dei testi alternativi forniti nelle immagini, la
+coerenza logica dell'architettura dell'informazione. Poiché queste scelte
+sono identiche nelle due versioni del sito, qualsiasi non conformità che
+ne derivasse sarebbe la stessa indipendentemente dal framework e non
+fornirebbe alcuna evidenza utile al confronto. Eventuali rilevamenti
+di questo tipo da parte degli strumenti di valutazione automatizzata
+o dell'ispezione manuale vengono pertanto documentati per completezza,
+ma non trattati come fattori discriminanti nell'analisi comparativa.
+
+3.1.1  Motivazione per un approccio misto
+
+Come stabilito nel Capitolo 2, nessuna singola tecnica di valutazione è
+sufficiente a catturare l'intera gamma di problemi di accessibilità che si presentano
+nelle applicazioni web moderne. Strumenti automatizzati come axe-core e Lighthouse
+sono in grado di rilevare un sottoinsieme ben definito di
+violazioni delle linee guida: tipicamente quelle che riguardano le proprietà strutturali
+del documento, come il testo alternativo mancante nelle immagini, rapporti di
+contrasto cromatico insufficienti, controlli di modulo privi di etichetta, o utilizzo
+scorretto degli attributi ARIA. Tuttavia, la letteratura scientifica mostra in modo
+consistente che gli strumenti automatizzati coprono solo una frazione limitata di
+tutti i criteri di successo WCAG applicabili. 
+
+I problemi rimanenti — che riguardano spesso il comportamento dinamico,
+la gestione del focus, i pattern di interazione da tastiera, gli annunci tramite
+live region e l'intelligibilità pratica del contenuto quando veicolato attraverso uno
+screen reader — richiedono l'ispezione da parte di un valutatore umano e, ove
+necessario, il test diretto con tecnologie assistive. Queste sono esattamente le
+categorie di problemi di accessibilità più difficili da implementare correttamente
+nello sviluppo front-end basato su componenti, e quindi le più rilevanti ai fini di
+questo confronto.
+
+Per questa ragione, la metodologia di valutazione combina tre approcci
+complementari:
+
+  (i)   Valutazione automatizzata, condotta con Total Validator Pro al
+        fine di produrre una valutazione di base delle violazioni strutturalmente
+        rilevabili su tutte le pagine di entrambe le implementazioni. La
+        valutazione automatizzata viene applicata in due momenti distinti:
+        prima di qualsiasi modifica orientata all'accessibilità, stabilendo
+        una baseline iniziale, e nuovamente dopo la remediation, al fine di
+        misurare la riduzione dei problemi automaticamente rilevabili.
+
+  (ii)  Valutazione manuale basata sui criteri di successo WCAG 2.1,
+        applicata a ciascun componente selezionato individualmente.
+        Il valutatore segue un protocollo di ispezione strutturato in cui
+        ogni criterio di successo applicabile viene valutato rispetto
+        all'implementazione del componente, all'output renderizzato e al
+        comportamento durante l'interazione. I criteri selezionati per
+        l'ispezione manuale sono quelli più direttamente rilevanti per i
+        componenti in esame e per i pattern di interazione che realizzano,
+        con particolare attenzione ai requisiti di Livello A e Livello AA
+        relativi alla percepibilità, all'operabilità da tastiera, alla gestione
+        del focus e alla robustezza semantica.
+
+  (iii) Test con tecnologie assistive, condotto tramite screen reader al fine
+        di verificare come ogni componente viene percepito e utilizzato da
+        utenti che non si affidano al feedback visivo. Questa dimensione di
+        test va oltre ciò che sia gli strumenti automatizzati sia l'ispezione
+        manuale strutturata possono determinare, perché riflette il
+        comportamento reale dell'albero di accessibilità così come interpretato
+        da uno specifico user agent. Il test con screen reader è utilizzato per
+        confermare o qualificare i risultati dei due approcci precedenti, e per
+        identificare problemi che né la valutazione automatizzata né
+        l'ispezione manuale rilevano in modo affidabile.
+
+La combinazione di questi tre approcci riflette il modello stratificato di
+valutazione dell'accessibilità che emerge dalla letteratura esaminata nel Capitolo 2
+e si allinea alla metodologia di valutazione raccomandata dalla Web Accessibility
+Initiative (WCAG-EM). Permette allo studio di produrre evidenze a più livelli
+di granularità: dal conteggio quantitativo delle violazioni automaticamente
+rilevabili alle valutazioni qualitative di come un componente si comporta in
+condizioni di utilizzo realistico con tecnologie assistive.
+
+3.1.2  Il setup controllato: stessa applicazione, due tecnologie
+
+La seconda scelta strutturale che caratterizza questo studio è l'adozione di
+un disegno a caso di studio controllato. Anziché confrontare risultati di
+accessibilità tratti da applicazioni sviluppate indipendentemente, o da pagine di
+test costruite artificialmente, questa tesi utilizza un'unica specifica funzionale —
+un sito web di un museo — implementata due volte, una in Angular e una in
+React, dallo stesso sviluppatore.
+
+Questa scelta è motivata da un limite che caratterizza diversi degli studi
+esaminati nel Capitolo 2. Gli studi comparativi su larga scala, come quelli di
+Martins e Duarte, confrontano i risultati di accessibilità tra siti web realizzati
+da team diversi, per scopi diversi e con gradi diversi di consapevolezza
+sull'accessibilità. Le differenze osservate possono riflettere la composizione dei
+campioni almeno quanto le proprietà delle tecnologie coinvolte. Analogamente,
+lo studio a livello di framework di Longley ed Elglaly utilizzava pagine di test
+deliberatamente errate per valutare se i framework fossero in grado di rilevare
+o prevenire specifiche violazioni — un approccio informativo rispetto agli
+strumenti del framework, ma che dice poco su come l'accessibilità viene gestita
+in un'applicazione interattiva completa e coerente.
+
+Il setup controllato adottato in questa tesi risponde a entrambi questi limiti.
+Utilizzando lo stesso sviluppatore, gli stessi requisiti funzionali, le stesse pagine
+e lo stesso insieme di componenti in entrambe le implementazioni, lo studio
+isola la tecnologia come variabile primaria. Le differenze nei risultati di
+accessibilità possono quindi essere interpretate con maggiore sicurezza come
+riflesso di differenze nel modo in cui ciascun framework supporta o complica
+un'implementazione accessibile.
+
+Le due implementazioni condividono le seguenti proprietà:
+
+  —   Realizzano le stesse quattro pagine: Home, Collezione, Biglietti
+      e Contatti.
+
+  —   Includono gli stessi componenti condivisi: un header di navigazione
+      responsive con menu hamburger e selettore della lingua, e un footer
+      a più colonne.
+
+  —   Implementano lo stesso insieme di componenti interattivi in ciascuna
+      pagina: un banner informativo chiudibile, un carosello di immagini,
+      un player per la guida audio, una griglia di collezione filtrabile con
+      card espandibili e lightbox per le immagini, un calendario custom
+      interattivo, un modulo di prenotazione a più campi, un embed di
+      Google Maps e un modulo di contatto con feedback di validazione.
+
+  —   Supportano contenuti bilingue in italiano e inglese, gestiti tramite
+      un servizio di lingua lato client, in modo che l'interazione di
+      cambio lingua sia anch'essa disponibile come oggetto di valutazione
+      in entrambe le implementazioni.
+
+  —   Nessuna delle due implementazioni utilizza una libreria di componenti
+      pre-costruita che fornisca accessibilità già integrata. Tutti i widget
+      interattivi sono implementati direttamente dallo sviluppatore,
+      utilizzando le primitive offerte da ciascun framework, al fine di
+      garantire che le caratteristiche di accessibilità del risultato riflettano
+      scelte implementative genuine e non il comportamento ereditato da
+      una libreria di terze parti.
+
+L'implementazione Angular, che costituisce l'artefatto principale di questa
+tesi ed è sviluppata e valutata in dettaglio, è realizzata con Angular 21.2
+utilizzando il modello di reattività basato sui segnali introdotto nelle versioni
+recenti del framework. L'implementazione React è costruita come controparte
+strutturalmente equivalente. Le versioni specifiche, le scelte di tooling e le
+dipendenze di libreria di ciascuna implementazione sono descritte in dettaglio
+nella Sezione 3.4.
+
+La procedura di valutazione complessiva segue una struttura in tre fasi:
+valutazione baseline, remediation e ri-valutazione. Nella fase baseline,
+entrambe le implementazioni vengono valutate nel loro stato iniziale, senza
+alcun miglioramento deliberato dell'accessibilità al di là di quanto uno
+sviluppatore produrrebbe naturalmente costruendo un sito funzionante. Nella
+fase di remediation, i problemi di accessibilità identificati durante la valutazione
+baseline vengono affrontati in ciascuna implementazione. Nella fase di
+ri-valutazione, lo stesso processo di valutazione viene ripetuto al fine di misurare
+l'effetto dei miglioramenti e di valutare il costo di sviluppo che è stato necessario
+per ottenerli. Questa struttura in tre fasi consente allo studio di rispondere a
+tutte e tre le domande di ricerca: la baseline iniziale di accessibilità (RQ1),
+la fattibilità dei miglioramenti (RQ2) e il costo di sviluppo associato alla
+remediation (RQ3).
+
+Le sezioni rimanenti di questo capitolo descrivono ciascun elemento della
+metodologia in maggiore dettaglio. La Sezione 3.2 presenta il disegno del caso
+di studio, inclusa la motivazione per la scelta del sito del museo, i requisiti
+funzionali e gli scenari di interazione che realizza. La Sezione 3.3 descrive il
+processo con cui i componenti specifici sono stati selezionati per la valutazione.
+La Sezione 3.4 documenta gli ambienti di sviluppo di entrambe le implementazioni.
+La Sezione 3.5 descrive il processo di valutazione dell'accessibilità nella sua
+interezza, compresi gli strumenti automatizzati, il protocollo di ispezione manuale
+e la procedura di test con tecnologie assistive.
+
+3.2  Disegno del caso di studio
+
+3.2.1  Motivazione per la scelta del sito del museo
+
+La scelta di un sito web di un museo come caso di studio risponde a
+una serie di requisiti che derivano direttamente dagli obiettivi della ricerca.
+In primo luogo, un sito museale è per sua natura rivolto a un pubblico ampio
+e diversificato, che include visitatori di ogni età, persone con disabilità visive
+o motorie, turisti che leggono in una lingua straniera e utenti occasionali privi
+di familiarità con le interfacce digitali. Questo fa sì che l'accessibilità non
+sia una preoccupazione marginale, ma un requisito centrale della progettazione.
+In secondo luogo, un sito di questo tipo offre una copertura ampia e naturale
+dei pattern di interfaccia che sono rilevanti per lo studio: accanto ai contenuti
+puramente informativi, è possibile includere componenti interattivi complessi
+come caroselli, griglie filtrabili, calendari di prenotazione e moduli con
+validazione, senza che la loro presenza risulti artificiale o forzata rispetto
+allo scopo del sito.
+
+In terzo luogo, il contesto museale è direttamente pertinente alla legislazione
+sull'accessibilità esaminata nel Capitolo 1. Le istituzioni culturali pubbliche
+rientrano nell'ambito applicativo della Direttiva (UE) 2016/2102 sull'accessibilità
+dei siti web del settore pubblico, e i servizi digitali che offrono — tra cui
+la prenotazione online di visite e la consultazione delle collezioni — sono
+progressivamente soggetti anche ai requisiti della Direttiva (UE) 2019/882
+(European Accessibility Act). La scelta di un caso di studio che appartiene
+a questo dominio garantisce quindi che le problematiche di accessibilità
+analizzate siano concrete e socialmente rilevanti, e non soltanto di interesse
+tecnico astratto.
+
+Il sito realizzato è denominato Museo della Vespa e rappresenta un museo
+immaginario dedicato alla storia dello scooter Vespa, situato a Roma. La
+collezione comprende modelli storici dagli anni quaranta fino ai giorni nostri.
+Questa scelta tematica ha permesso di costruire contenuti realistici e
+strutturalmente ricchi — schede tecniche dei modelli, galleria fotografica,
+sistema di prenotazione, informazioni di contatto — senza dipendere da
+dati reali soggetti a restrizioni d'uso.
+
+3.2.2  Requisiti funzionali e ambito
+
+Il sito è composto da quattro pagine principali, ciascuna con un ruolo
+distinto nell'esperienza dell'utente e ciascuna progettata per ospitare un
+sottoinsieme specifico di widget interattivi. L'insieme complessivo dei
+componenti è stato definito in modo da coprire le categorie di problemi
+di accessibilità più rilevanti nella letteratura esaminata nel Capitolo 2:
+semantica strutturale, gestione del focus, navigazione da tastiera, annunci
+dinamici e compatibilità con tecnologie assistive.
+
+I requisiti funzionali complessivi del sito sono i seguenti:
+
+  —   Navigazione tra le quattro pagine tramite un header responsive,
+      con comportamento a menu hamburger su viewport ridotti e
+      selettore della lingua (italiano / inglese) integrato nella barra
+      di navigazione.
+
+  —   Visualizzazione di una collezione di oggetti museali con possibilità
+      di filtrare i risultati per decade di produzione, per anno massimo
+      tramite uno slider, e per testo libero tramite una barra di ricerca.
+      Ogni oggetto è rappresentato da una card che può essere espansa
+      per mostrare informazioni aggiuntive, e la cui immagine può essere
+      ingrandita tramite una lightbox.
+
+  —   Consultazione dei prezzi dei biglietti tramite una tabella strutturata,
+      visualizzazione della disponibilità giornaliera tramite un calendario
+      interattivo custom, e completamento di un modulo di prenotazione
+      con selezione della data, della fascia oraria, della tipologia e
+      della quantità di biglietti, con calcolo dinamico del totale e
+      conferma tramite un overlay di popup.
+
+  —   Accesso alle informazioni di contatto del museo (indirizzo, telefono,
+      email, orari), visualizzazione della posizione su mappa tramite
+      un embed di Google Maps, e invio di una richiesta di contatto
+      tramite un modulo con campi di tipo testo, email, telefono, select,
+      radio button, textarea e checkbox per il consenso privacy.
+
+  —   Riproduzione di una traccia audio di presentazione del museo,
+      con testo in italiano e in inglese, tramite un player audio nativo
+      del browser attivabile su richiesta.
+
+  —   Visualizzazione di un banner informativo sulla mostra temporanea
+      in corso, chiudibile dall'utente tramite un pulsante di dismissione.
+
+  —   Cambio della lingua dell'interfaccia tra italiano e inglese in tempo
+      reale, senza ricaricamento della pagina.
+
+L'ambito è deliberatamente delimitato alle funzionalità elencate. Non sono
+incluse funzionalità di autenticazione, pagamento reale, backend o
+persistenza dei dati, poiché queste esulano dall'obiettivo della ricerca, che
+è confrontare l'accessibilità dei componenti dell'interfaccia e non la
+sicurezza o la logica applicativa.
+
+3.2.3  Pagine e scenari di interazione
+
+Questa sezione descrive in dettaglio ciascuna delle quattro pagine del sito,
+con i widget che ospita e gli scenari di interazione che ciascuno di essi
+introduce.
+
+Pagina Home
+
+La pagina Home è il punto di ingresso del sito e svolge una funzione
+prevalentemente informativa ed espositiva. Nella parte superiore è presente
+un banner informativo sulla mostra temporanea futura, che può essere
+chiuso dall'utente tramite un pulsante con icona di croce. Di seguito,
+un carosello di quattro immagini fotografiche del museo è navigabile
+tramite frecce laterali e pallini indicatori cliccabili; il passaggio tra le
+slide avviene su richiesta esplicita dell'utente e non in modo automatico.
+Sotto al carosello, un paragrafo introduttivo descrive la storia del museo.
+Una sezione di azioni rapide contiene un pulsante che attiva, al click, un
+player audio nativo del browser per la riproduzione della presentazione
+vocale del museo — il player è nascosto per impostazione predefinita e
+appare soltanto dopo l'interazione. Sono presenti tre contatori numerici
+che mostrano statistiche del museo (numero di modelli esposti, visitatori
+annui, anno di apertura) e una griglia di tre card di recensioni dei
+visitatori, con valutazione a stelle e testo.
+
+Gli scenari di interazione principali della pagina Home sono: chiudere
+il banner, navigare il carosello tramite frecce e pallini, attivare e
+riprodurre il player audio.
+
+Pagina Collezione
+
+La pagina Collezione presenta la raccolta di modelli di Vespa esposti
+nel museo. In cima alla pagina è incorporato un video del museo
+riproducibile tramite controlli nativi del browser. Sotto al video, una
+barra di ricerca a testo libero permette di filtrare i modelli per nome.
+Una serie di chip-button corrispondenti alle decadi di produzione (dagli
+anni quaranta agli anni novanta) consente di filtrare ulteriormente i
+risultati; la selezione di una decade è esclusiva e la chip attiva è
+visivamente distinta. Un cursore (range input) permette di impostare
+un anno massimo di produzione, filtrando dinamicamente la griglia dei
+risultati.
+
+La griglia mostra le card dei modelli corrispondenti ai filtri applicati.
+Ciascuna card contiene l'immagine del modello, il nome, l'anno e la
+cilindrata. Un toggle switch nella parte destra dell'intestazione della
+card espande o comprime una sezione di dettaglio che include la
+descrizione storica del modello nella lingua attiva, i dati tecnici del
+motore e il codice identificativo, e un link esterno per maggiori 
+informazioni sul modello. L'immagine di ogni card è cliccabile e apre una lightbox:
+un overlay che mostra l'immagine ingrandita, il nome del modello e i
+dati principali, chiudibile tramite un pulsante con icona di croce o
+cliccando sull'area esterna al riquadro.
+
+Gli scenari di interazione principali della pagina Collezione sono:
+cercare un modello per nome, filtrare per decade, filtrare per anno
+tramite slider, espandere i dettagli di una card tramite il toggle,
+aprire e chiudere la lightbox.
+
+Pagina Biglietti
+
+La pagina Biglietti è la più ricca di componenti interattivi e introduce
+la maggior parte dei widget di modulo del sito. La pagina si apre
+con una tabella dei prezzi con intestazione, corpo e didascalia, che
+mostra le tre tipologie di biglietto disponibili (intero, ridotto, gratuito)
+con la rispettiva descrizione e il costo.
+
+Il secondo widget è un calendario di disponibilità interamente custom,
+non basato su librerie di terze parti. Il calendario mostra il mese
+corrente in una griglia a sette colonne (lunedì-domenica) e permette
+di navigare tra i mesi tramite pulsanti freccia. Ogni cella del calendario
+corrisponde a un giorno e può trovarsi in uno dei seguenti stati:
+disponibile (verde), quasi esaurito (arancione), esaurito (rosso),
+chiuso (grigio) o passato (grigio, non cliccabile). La selezione di un
+giorno disponibile aggiorna il campo data del modulo di prenotazione
+sottostante. Una legenda cromatica in fondo al calendario spiega
+il significato dei colori.
+
+Il modulo di prenotazione è composto da: un campo data di tipo
+input[type="date"] nativo, sincronizzato con il calendario custom
+(la selezione sul calendario aggiorna il picker e viceversa); una select
+per la scelta della fascia oraria tra quattro opzioni disponibili; tre
+righe di checkbox abbinate ciascuna a un campo numerico per la
+selezione della tipologia e della quantità di biglietti (intero, ridotto,
+gratuito) — il campo numerico appare soltanto quando il checkbox
+corrispondente è attivato; un totale dinamico che calcola e mostra
+l'importo complessivo in tempo reale; un campo email per la
+comunicazione della conferma. Al click sul pulsante di prenotazione
+viene eseguita la validazione del modulo; se la validazione ha successo,
+appare un overlay di conferma (toast popup) con un riepilogo della
+prenotazione e un pulsante di chiusura.
+
+Gli scenari di interazione principali della pagina Biglietti sono:
+navigare il calendario, selezionare una data, scegliere una fascia
+oraria, attivare e quantificare i biglietti tramite checkbox e campi
+numerici, inviare il modulo, leggere il popup di conferma e chiuderlo.
+
+Pagina Contatti
+
+La pagina Contatti è articolata in quattro sezioni distinte. La prima
+mostra la posizione del museo tramite un iframe di Google Maps embed.
+La seconda è una griglia di quattro card informative contenenti
+indirizzo, numero di telefono (con link tel:), indirizzo email (con
+link mailto:) e orari di apertura. La terza sezione ospita il modulo
+di contatto, composto da: due campi di testo (nome e cognome),
+un campo email, un campo telefono di tipo input[type="tel"], una
+select per l'oggetto della richiesta con quattro opzioni, un gruppo
+di tre radio button per il tipo di visitatore (privato, gruppo, stampa),
+una textarea per il messaggio e un checkbox per l'accettazione della
+privacy policy con link al testo completo. La validazione del modulo
+è attivata dal click sul pulsante di invio e mostra un elenco di
+messaggi di errore in una area sopra al modulo. La quarta sezione
+contiene tre card informative sulle modalità di accesso al museo
+(metropolitana, autobus, parcheggio), con contenuto puramente
+informativo e privo di interattività.
+
+Gli scenari di interazione principali della pagina Contatti sono:
+consultare la mappa, fare click sui link di contatto (telefono, email),
+compilare e inviare il modulo di contatto, leggere i messaggi di
+errore di validazione.
+
+3.3  Selezione dei componenti
+
+3.3.1  Criteri di selezione
+
+La selezione dei componenti sottoposti a valutazione dell'accessibilità
+segue quattro criteri principali, definiti in modo da garantire che l'insieme
+risultante sia rappresentativo, tecnicamente rilevante e sufficientemente
+diversificato da coprire le principali categorie di problemi di accessibilità
+che caratterizzano le applicazioni web moderne.
+
+Il primo criterio è la presenza di interattività significativa. Sono stati
+privilegiati i componenti che richiedono un'interazione da parte dell'utente
+che va oltre la semplice lettura del contenuto: apertura e chiusura di
+elementi dell'interfaccia, navigazione tra stati, selezione di valori, invio
+di dati. Questi componenti sono quelli per cui l'accessibilità dipende
+in misura maggiore da scelte implementative esplicite — gestione del focus,
+semantica dei ruoli ARIA, comportamento da tastiera — e che quindi
+permettono di confrontare più significativamente le due tecnologie.
+
+Il secondo criterio è la diversità dei pattern di interazione. L'insieme
+selezionato include componenti che appartengono a categorie funzionali
+distinte: navigazione, presentazione di contenuto multimediale, raccolta
+di dati tramite modulo, comunicazione di stato tramite overlay, e
+visualizzazione di contenuto incorporato da fonti esterne. Questa
+diversità garantisce che la valutazione non sia limitata a un unico tipo
+di problema di accessibilità, ma copra categorie differenti di criteri WCAG.
+
+Il terzo criterio è la rilevanza rispetto ai criteri di successo WCAG
+più frequentemente violati nelle applicazioni web contemporanee. Come
+evidenziato nel Capitolo 1 attraverso i dati del report WebAIM Million,
+le violazioni più diffuse riguardano le etichette dei controlli di modulo,
+il testo alternativo per le immagini, il contrasto cromatico e la struttura
+semantica del documento. I componenti selezionati toccano la quasi
+totalità di queste categorie, permettendo di verificare non soltanto se
+le violazioni più comuni siano presenti nella baseline, ma anche se
+e come possano essere corrette nelle due implementazioni.
+
+Il quarto criterio è la presenza di gap di accessibilità intenzionali
+nell'implementazione baseline. Come precisato nella Sezione 3.1.2, entrambe
+le implementazioni sono state realizzate senza correzioni deliberate
+dell'accessibilità nella fase iniziale. Nell'implementazione Angular,
+il codice sorgente documenta esplicitamente, tramite commenti, le
+scelte implementative che introducono violazioni accessibili note:
+l'uso di elementi <span> al posto di <label> nei moduli, l'assenza
+di attributi ARIA sui componenti interattivi custom, la mancanza
+di gestione del focus negli overlay, l'assenza di attributi <title>
+sugli iframe e l'assenza di annunci tramite live region per i
+messaggi di feedback dinamico. Questi gap intenzionali garantiscono
+che la baseline presenti effettivamente problemi rilevabili e confrontabili
+tra le due tecnologie.
+
+3.3.2  Panoramica dei componenti selezionati
+
+In applicazione dei criteri descritti nella sezione precedente, i componenti
+selezionati per la valutazione sono dieci, raggruppati in base alla loro
+natura funzionale. Per ciascuno viene indicata la pagina di appartenenza
+e la tipologia di widget. Le specifiche problematiche di accessibilità
+riscontrate in ciascun componente sono discusse nel Capitolo 4.
+
+Componente 1 — Header di navigazione (pagina: tutte)
+
+L'header è il componente di navigazione principale del sito ed è presente
+su tutte le pagine. Contiene il logo del museo (un'immagine trattata come
+decorativa), il nome del museo come testo visibile, i quattro link di
+navigazione e un selettore della lingua. Su viewport ridotti, i link di
+navigazione sono nascosti e sostituiti da un pulsante hamburger che
+apre e chiude un menu a tendina. Il link corrispondente alla pagina
+corrente è evidenziato visivamente tramite una classe CSS dedicata.
+
+Componente 2 — Banner informativo chiudibile (pagina: Home)
+
+Il banner è una barra informativa posizionata in cima alla pagina Home
+che comunica all'utente la presenza di una mostra temporanea in corso.
+Contiene un testo descrittivo con il titolo e le date della mostra e un
+pulsante di chiusura con un'icona di croce come unico contenuto visibile.
+Una volta chiuso, il banner scompare definitivamente per tutta la sessione.
+
+Componente 3 — Carosello di immagini (pagina: Home)
+
+Il carosello mostra quattro fotografie del museo in sequenza. La navigazione
+tra le slide avviene tramite due pulsanti freccia (precedente e successivo)
+posizionati ai lati dell'immagine e tramite quattro pallini indicatori
+posizionati sotto di essa. Il passaggio tra le slide è sempre su richiesta
+esplicita dell'utente e non avviene in modo automatico. Ogni immagine
+è accompagnata da un testo alternativo descrittivo.
+
+Componente 4 — Griglia filtrata con card espandibili e lightbox
+(pagina: Collezione)
+
+Questo componente raggruppa tre elementi strettamente correlati: i
+controlli di filtro, la griglia di card e la lightbox. I controlli di filtro
+comprendono una barra di ricerca a testo libero, una serie di chip-button
+per filtrare i modelli per decade di produzione e un cursore (range input)
+per impostare un anno massimo. La griglia mostra le card dei modelli
+corrispondenti ai filtri attivi; ogni card contiene l'immagine del modello,
+il nome, l'anno e la cilindrata, e può essere espansa tramite un toggle
+switch per mostrare la descrizione storica, i dati tecnici del motore e
+un link esterno alla pagina Wikipedia del modello. Facendo click
+sull'immagine di una card si apre una lightbox: un overlay a schermo
+intero che mostra l'immagine ingrandita con nome e dati principali del
+modello, chiudibile tramite un pulsante con icona di croce o cliccando
+sull'area esterna al riquadro.
+
+Componente 5 — Tabella dei prezzi (pagina: Biglietti)
+
+La tabella dei prezzi è un elemento <table> con didascalia (<caption>),
+intestazione (<thead>) e corpo (<tbody>). Riporta le tre tipologie di
+biglietto disponibili (intero, ridotto, gratuito), con una colonna per
+la denominazione, una per la descrizione del pubblico di riferimento
+e una per il prezzo.
+
+Componente 6 — Calendario di disponibilità interattivo (pagina: Biglietti)
+
+Il calendario è il componente interattivo più complesso del sito. È
+implementato interamente con primitive HTML e CSS, senza librerie di
+terze parti. Mostra il mese corrente in una griglia a sette colonne
+(lunedì–domenica) navigabile tramite pulsanti freccia. Ogni cella
+corrisponde a un giorno del mese e può trovarsi in uno dei seguenti
+stati: disponibile, quasi esaurito, esaurito, chiuso o passato, ciascuno
+comunicato visivamente tramite un colore distinto e un'etichetta testuale.
+La selezione di un giorno disponibile aggiorna in modo sincronizzato
+il campo data del modulo di prenotazione sottostante. Una legenda
+cromatica sotto alla griglia illustra il significato di ogni colore.
+
+Componente 7 — Modulo di prenotazione (pagina: Biglietti)
+
+Il modulo di prenotazione raccoglie la data della visita (tramite un
+input[type="date"] nativo sincronizzato con il calendario custom), la
+fascia oraria (tramite una select con quattro opzioni), la tipologia e la
+quantità di biglietti (tramite tre checkbox abbinati ciascuno a un campo
+numerico che appare solo quando il checkbox è attivato), e l'indirizzo
+email dell'utente per la conferma. Un totale dinamico calcola e mostra
+in tempo reale l'importo complessivo in base alle selezioni effettuate.
+Al click sul pulsante di prenotazione viene eseguita la validazione;
+se la validazione ha successo, appare un overlay di conferma (toast popup)
+con il riepilogo della prenotazione e un pulsante di chiusura.
+
+Componente 8 — Mappa embed (pagina: Contatti)
+
+La mappa è implementata tramite un elemento <iframe> che incorpora
+una mappa di Google Maps centrata sulla posizione del museo. È
+posizionata nella prima sezione della pagina Contatti, sotto all'intestazione
+"Dove siamo".
+
+Componente 9 — Modulo di contatto (pagina: Contatti)
+
+Il modulo di contatto è il più articolato dei due moduli presenti nel
+sito. Contiene un campo di testo per il nome, un campo email, un campo
+telefono (input[type="tel"]), una select per l'oggetto della richiesta
+(informazioni generali, prenotazioni di gruppo, mostre, altro), un gruppo
+di tre radio button per la tipologia di visitatore (privato, gruppo, stampa),
+una textarea per il testo del messaggio e un checkbox per l'accettazione
+della privacy policy con link al testo completo. La validazione del modulo
+è attivata dal pulsante di invio e, in caso di errori, mostra un elenco
+di messaggi sopra al modulo.
+
+Componente 10 — Selettore della lingua (pagina: tutte, integrato nell'header)
+
+Il selettore della lingua è implementato come coppia di pulsanti (IT / EN)
+integrata nella barra dell'header, visibile sia su desktop sia su mobile.
+Il click su un pulsante cambia immediatamente la lingua dell'intera
+interfaccia senza ricaricare la pagina, aggiornando tutti i testi tramite
+un servizio di lingua lato client basato sui segnali Angular. Il pulsante
+corrispondente alla lingua attiva è visivamente distinto tramite una
+classe CSS dedicata.
+
+Tabella di riepilogo dei componenti selezionati
+
+La tabella seguente riassume i dieci componenti selezionati con
+indicazione della pagina di appartenenza e della tipologia di widget.
+
+  Componente                   | Pagina      | Tipologia
+  -----------------------------|-------------|----------------------------------
+  Header di navigazione        | Tutte       | Navigazione, hamburger menu
+  Banner chiudibile            | Home        | Barra informativa con dismiss
+  Carosello di immagini        | Home        | Carousel su richiesta
+  Griglia filtrata + lightbox  | Collezione  | Filtri, card espandibili, overlay
+  Tabella dei prezzi           | Biglietti   | Tabella dati strutturata
+  Calendario interattivo       | Biglietti   | Griglia di selezione data custom
+  Modulo di prenotazione       | Biglietti   | Form con checkbox, number, select
+  Mappa embed                  | Contatti    | iframe Google Maps
+  Modulo di contatto           | Contatti    | Form con radio, textarea, checkbox
+  Selettore della lingua       | Tutte       | Coppia di pulsanti toggle lingua
+
+I componenti selezionati coprono collettivamente tutte le quattro pagine
+del sito e includono rappresentanti di ciascuna delle seguenti macro-categorie
+funzionali: navigazione globale, contenuto mediatico interattivo, raccolta
+di dati tramite modulo, overlay e dialoghi, e contenuto incorporato esterno.
+Questa copertura garantisce che la valutazione produca evidenze su un insieme
+ampio e diversificato di pattern di interfaccia, rendendo il confronto tra
+React e Angular significativo non soltanto in termini aggregati, ma anche
+rispetto a categorie specifiche di sfide implementative.
+
+3.4  Ambiente di sviluppo e configurazione
+
+3.4.1  Ambiente Angular
+
+L'implementazione Angular del sito del museo è sviluppata con Angular
+nella versione 21.2, rilasciata nel febbraio 2026. Il progetto è generato
+tramite Angular CLI nella versione 21.2.8, che costituisce lo strumento
+ufficiale per la creazione, la gestione e la compilazione dei progetti
+Angular. Il gestore di pacchetti utilizzato è npm nella versione 11.12.1.
+
+Il linguaggio di programmazione adottato è TypeScript nella versione 5.9,
+con la configurazione del compilatore impostata in modalità strict. Questo
+significa che sono attive le opzioni noImplicitOverride, noPropertyAccessFromIndexSignature,
+noImplicitReturns e noFallthroughCasesInSwitch, insieme alla verifica
+rigorosa dei template Angular (strictTemplates) e dei parametri di
+iniezione delle dipendenze (strictInjectionParameters). Il target di
+compilazione TypeScript è ES2022. I fogli di stile dei componenti sono
+scritti in SCSS.
+
+Il modello di reattività adottato è quello basato sui segnali (Signals API),
+introdotto in forma stabile a partire da Angular 17 e consolidato nelle
+versioni successive. L'intera gestione dello stato dei componenti — apertura
+e chiusura di overlay, stato del menu hamburger, slide attiva del carosello,
+filtri della collezione, selezione della data nel calendario, valori dei campi
+di modulo — è realizzata tramite signal() e computed(), senza ricorso a
+RxJS o a soluzioni di state management esterne.
+
+Il routing dell'applicazione è gestito tramite il modulo @angular/router,
+configurato con quattro rotte corrispondenti alle quattro pagine del sito
+(Home, Collezione, Biglietti, Contatti) più una rotta wildcard che reindirizza
+alla Home. Ogni rotta specifica il titolo della pagina tramite la proprietà
+title, che Angular imposta automaticamente sull'elemento <title> del
+documento al cambio di rotta.
+
+Le dipendenze dichiarate nel file package.json sono le seguenti:
+
+  Dipendenze di produzione:
+    @angular/cdk              21.2.7    — Angular Component Dev Kit
+    @angular/common           21.2.0
+    @angular/compiler         21.2.0
+    @angular/core             21.2.0
+    @angular/forms            21.2.0    — utilizzato per ngModel nei moduli
+    @angular/platform-browser 21.2.0
+    @angular/router           21.2.0
+    rxjs                      7.8.x
+    tslib                     2.3.x
+
+  Dipendenze di sviluppo:
+    @angular/build            21.2.8    — builder Vite-based ufficiale
+    @angular/cli              21.2.8
+    @angular/compiler-cli     21.2.0
+    eslint                    10.0.x
+    angular-eslint            21.3.1
+    typescript-eslint         8.56.1
+    prettier                  3.8.x
+    jsdom                     28.0.x    — utilizzato per i test
+    vitest                    4.0.x     — framework di test
+
+Si noti che il pacchetto @angular/cdk è incluso come dipendenza di
+produzione, ma non viene utilizzato per i widget accessibili nella baseline:
+nessun componente del sito utilizza il CDK Overlay, il CDK A11y o altri
+moduli di accessibilità del CDK nella versione iniziale. La sua presenza
+nel progetto è stata valutata in fase di setup come potenziale risorsa per
+la fase di remediation, in particolare per il focus trap dei dialoghi tramite
+FocusTrap del modulo @angular/cdk/a11y.
+
+Il server di sviluppo è avviato tramite il comando ng serve e rimane in
+ascolto sulla porta 4200 per impostazione predefinita. Il builder utilizzato
+per la compilazione è @angular/build, basato su Vite, che sostituisce il
+precedente builder basato su Webpack a partire da Angular 17. I file statici
+(immagini, video, audio) sono posizionati nella cartella public/ e serviti
+direttamente alla radice del server di sviluppo senza elaborazione da parte
+del build system.
+
+L'applicazione è strutturata nel seguente modo:
+
+  src/
+    main.ts               — bootstrap dell'applicazione standalone
+    index.html            — shell HTML della SPA
+    styles.scss           — stili globali
+    app/
+      app.ts              — componente radice
+      app.html            — template del componente radice
+      app.routes.ts       — definizione delle rotte
+      app.config.ts       — configurazione dell'applicazione
+      pages/
+        home/             — componente pagina Home
+        collezione/       — componente pagina Collezione
+        biglietti/        — componente pagina Biglietti
+        contatti/         — componente pagina Contatti
+      shared/
+        language.service.ts   — servizio di gestione della lingua
+        header/               — componente header condiviso
+        footer/               — componente footer condiviso
+
+Tutti i componenti sono standalone (nessun NgModule), in linea con
+le raccomandazioni delle versioni recenti di Angular. Il servizio di lingua
+è fornito a livello di applicazione tramite il meccanismo di iniezione
+delle dipendenze di Angular e gestisce un dizionario completo di traduzioni
+in italiano e inglese, selezionabile a runtime tramite un segnale.
+
+3.4.2  Ambiente React
+
+L'implementazione React del sito del museo è sviluppata con React nella
+versione 19.2, l'ultima versione stabile disponibile al momento della
+realizzazione del progetto. Il progetto è generato tramite Vite nella
+versione 8.0.12, utilizzando il template ufficiale per React con TypeScript,
+e configurato con il plugin @vitejs/plugin-react nella versione 6.0.1.
+Il gestore di pacchetti utilizzato è npm.
+
+Il linguaggio di programmazione adottato è TypeScript nella versione 6.0.3,
+con la configurazione del compilatore impostata in modalità strict. Sono
+attive le opzioni noUnusedLocals e noUnusedParameters, insieme alle
+impostazioni isolatedModules, moduleDetection: force e jsx: react-jsx,
+che abilita la trasformazione JSX moderna senza la necessità di importare
+esplicitamente React in ciascun file. Il target di compilazione TypeScript
+è ES2020. I fogli di stile dei componenti sono scritti in CSS standard,
+senza preprocessori.
+
+Il modello di reattività adottato è quello nativo di React, interamente
+basato su hook. L'intera gestione dello stato dei componenti — apertura
+e chiusura di overlay, stato del menu hamburger, slide attiva del
+carosello, filtri della collezione, selezione della data nel calendario,
+valori dei campi di modulo — è realizzata tramite il hook useState, con
+effetti collaterali gestiti tramite useEffect e riferimenti a nodi del DOM
+tramite useRef, senza ricorso a librerie di state management esterne
+come Redux o Zustand.
+
+La gestione della lingua è realizzata tramite la Context API di React:
+un LanguageContext espone lo stato corrente della lingua (it / en) e la
+funzione di aggiornamento tramite un provider (LanguageProvider) che
+avvolge l'intera applicazione. I componenti accedono al dizionario di
+traduzione attivo tramite il hook personalizzato useLanguage, in modo
+strutturalmente analogo al servizio di lingua dell'implementazione Angular.
+
+Il routing dell'applicazione è gestito tramite react-router-dom nella
+versione 7.15.0, configurato con quattro rotte corrispondenti alle quattro
+pagine del sito (Home, Collezione, Biglietti, Contatti) più una rotta
+di reindirizzamento che rimanda alla Home per i percorsi non riconosciuti.
+A differenza dell'implementazione Angular, che imposta automaticamente il
+titolo della pagina tramite la proprietà title della definizione di rotta,
+l'implementazione React non gestisce il titolo del documento al cambio
+di rotta: nessun meccanismo equivalente è presente nel progetto.
+
+Le dipendenze dichiarate nel file package.json sono le seguenti:
+
+  Dipendenze di produzione:
+    react                      19.2.x    — libreria core
+    react-dom                  19.2.x    — rendering nel DOM del browser
+    react-router-dom           7.15.0    — routing lato client
+
+  Dipendenze di sviluppo:
+    @vitejs/plugin-react        6.0.1    — integrazione Vite–React con Fast Refresh
+    vite                       8.0.12    — build tool e server di sviluppo
+    typescript                  6.0.3    — compilatore TypeScript
+    @types/react               19.2.x    — dichiarazioni TypeScript per React
+    @types/react-dom           19.2.x    — dichiarazioni TypeScript per ReactDOM
+    @types/react-router-dom     5.3.x    — dichiarazioni TypeScript per il router
+    eslint                     10.3.x    — linter JavaScript/TypeScript
+    eslint-plugin-react-hooks   7.1.1    — regole ESLint specifiche per i hook React
+    eslint-plugin-react-refresh 0.5.2    — regole ESLint per React Fast Refresh
+    @eslint/js                 10.0.x    — configurazione ESLint base
+    globals                    17.6.x    — definizioni di variabili globali per ESLint
+
+Il server di sviluppo è avviato tramite il comando vite e rimane in
+ascolto sulla porta 5173 per impostazione predefinita. Il builder è Vite
+nativo, che utilizza esbuild per la transpilazione durante lo sviluppo e
+Rollup per il bundling in produzione. I file statici (immagini, video,
+audio) sono posizionati nella cartella public/ e serviti direttamente alla
+radice del server di sviluppo senza elaborazione da parte del build system.
+L'applicazione è avviata in React.StrictMode, come da configurazione
+predefinita del template Vite, il che comporta la doppia invocazione
+degli effetti in modalità development al fine di rilevare effetti collaterali
+impuri.
+
+L'applicazione è strutturata nel seguente modo:
+
+  index.html            — shell HTML della SPA (nella radice del progetto)
+  src/
+    main.tsx            — bootstrap dell'applicazione in StrictMode
+    App.tsx             — componente radice con routing e layout globale
+    App.css             — stili globali del componente radice
+    index.css           — stili CSS di base
+    context/
+      LanguageContext.tsx   — context, provider e hook per la lingua
+    components/
+      Header/               — componente header condiviso
+      Footer/               — componente footer condiviso
+    pages/
+      Home/                 — componente pagina Home
+      Collezione/           — componente pagina Collezione
+      Biglietti/            — componente pagina Biglietti
+      Contatti/             — componente pagina Contatti
+
+Tutti i componenti sono function component con hook, in linea con le
+raccomandazioni della documentazione ufficiale di React a partire dalla
+versione 16.8. Non è presente alcun class component nell'implementazione.
+Il context di lingua è fornito a livello di applicazione tramite il
+LanguageProvider collocato nel componente radice App, e gestisce un
+dizionario completo di traduzioni in italiano e inglese, selezionabile
+a runtime tramite la funzione di aggiornamento esposta dal context.
+
+3.5  Processo di valutazione dell'accessibilità
+
+Il processo di valutazione adottato in questa tesi segue un approccio
+misto, strutturato in tre livelli complementari — valutazione automatizzata,
+ispezione manuale e test con tecnologie assistive — applicati in tre fasi
+temporali distinte: baseline, remediation e ri-valutazione. La motivazione
+di questa scelta è stata illustrata nella Sezione 3.1.1; le sezioni che seguono
+descrivono in dettaglio gli strumenti, i criteri e le procedure operative
+adottati per ciascun livello e per ciascuna fase.
+
+3.5.1  Valutazione automatizzata (Total Validator Pro)
+
+Lo strumento scelto per la valutazione automatizzata è Total Validator Pro,
+nella versione desktop disponibile come applicazione standalone per
+sistemi Windows e macOS. Total Validator Pro è uno strumento di validazione
+integrata che combina in un'unica esecuzione la verifica della conformità
+HTML secondo le specifiche W3C, la verifica della conformità ai criteri
+di successo WCAG 2.1 tramite un motore di analisi statica del DOM
+renderizzato, e la validazione delle dichiarazioni CSS. La scelta di Total
+Validator rispetto ad altri strumenti diffusi — come l'estensione axe DevTools
+o il modulo di accessibilità di Google Lighthouse — è motivata da due
+considerazioni principali.
+
+In primo luogo, Total Validator Pro analizza la pagina a partire dal DOM
+effettivamente renderizzato nel browser, inclusi i contenuti generati
+dinamicamente da Angular e React attraverso il rendering lato client.
+Questo lo rende più adatto alla valutazione di Single-Page Application
+rispetto agli strumenti che analizzano soltanto il codice sorgente HTML
+statico prima dell'idratazione JavaScript.
+
+In secondo luogo, Total Validator Pro produce un report strutturato per
+pagina che elenca ciascuna violazione rilevata con il riferimento al
+criterio WCAG violato, la posizione nell'albero del DOM, una descrizione
+del problema e, nella maggior parte dei casi, un suggerimento correttivo.
+Questa struttura permette di confrontare i risultati tra le due implementazioni
+in modo sistematico e di tracciare con precisione le variazioni tra la
+baseline e la fase post-remediation.
+
+La procedura di valutazione automatizzata applicata in questo studio
+è la seguente. Entrambe le implementazioni — Angular e React — sono
+ospitate e accessibili tramite URL pubblici su Internet. Total Validator Pro,
+a partire dall'URL della pagina home di ciascuna implementazione, esegue
+automaticamente la scansione dell'intero sito, individuando e analizzando
+tutte le pagine raggiungibili tramite i collegamenti interni. In questo modo,
+con una singola operazione per ciascuna implementazione, vengono coperte
+tutte e quattro le pagine del sito — Home, Collezione, Biglietti e Contatti —
+per un totale di due scansioni complete nella fase baseline e altrettante nella
+fase di ri-valutazione. Ciascuna scansione è configurata per verificare
+la conformità WCAG 2.1 ai livelli A e AA, e il DOM analizzato riflette
+il comportamento reale dell'applicazione in produzione su un browser moderno.
+
+Per ciascuna pagina e ciascuna implementazione, i risultati della
+scansione vengono registrati con i seguenti dati: numero totale di
+violazioni rilevate, violazioni raggruppate per criterio di successo
+WCAG, e indicazione degli elementi del DOM coinvolti. I risultati
+della fase baseline e della fase di ri-valutazione vengono poi confrontati
+per misurare la riduzione del numero di violazioni automaticamente
+rilevabili conseguente alle modifiche di remediation.
+
+È importante precisare che la valutazione automatizzata è considerata
+in questo studio come uno strumento ausiliario e non come l'unica
+fonte di evidenza. Come discusso nella Sezione 3.1.1, gli strumenti
+automatizzati non sono in grado di rilevare l'intera gamma di problemi
+di accessibilità rilevanti, in particolare quelli che riguardano la gestione
+del focus, il comportamento da tastiera e l'intelligibilità del contenuto
+attraverso uno screen reader. I risultati di Total Validator Pro sono pertanto
+integrati sistematicamente con quelli dell'ispezione manuale e del test
+con tecnologie assistive descritti nelle sezioni successive.
+
+3.5.2  Valutazione manuale e selezione dei criteri di successo WCAG
+
+La valutazione manuale è il livello centrale del processo di valutazione
+e costituisce la fonte primaria di evidenza per le analisi del Capitolo 4.
+Essa è condotta dal valutatore su ciascuno dei dieci componenti selezionati
+nella Sezione 3.3, applicando un protocollo di ispezione strutturato basato
+su un sottoinsieme dei criteri di successo WCAG 2.1 ai livelli A e AA.
+
+Selezione dei criteri di successo
+
+Il principio che guida la selezione dei criteri è direttamente collegato
+all'oggetto del confronto definito nella Sezione 3.1: questo studio non
+misura il livello assoluto di accessibilità del sito, ma confronta come
+Angular e React influenzano la produzione di un'interfaccia tecnicamente
+accessibile. Di conseguenza, i criteri considerati nella valutazione manuale
+sono esclusivamente quelli la cui soddisfazione dipende da scelte
+implementative che il framework media direttamente: la struttura semantica
+del DOM generato dai componenti, la presenza di associazioni programmatiche
+tra elementi, la navigabilità e la gestione del focus via tastiera, la
+corretta esposizione degli stati interattivi tramite attributi ARIA, e
+l'annuncio degli aggiornamenti dinamici tramite live region.
+
+Sono esclusi dal perimetro della valutazione manuale comparativa i criteri
+la cui soddisfazione dipende da scelte di design o di contenuto condivise
+tra le due implementazioni, e che pertanto non possono produrre evidenze
+differenziali. Tra questi: il criterio 1.4.3 (Contrasto minimo), il cui
+rispetto dipende dalla palette cromatica adottata nel design del sito,
+identica nelle due versioni; il criterio 1.4.4 (Ridimensionamento del testo),
+determinato dalle regole CSS che sono analoghe nelle due implementazioni;
+e il criterio 1.3.2 (Sequenza significativa), che riflette l'ordine logico
+dei contenuti, una scelta architetturale del sito indipendente dal framework.
+Questi criteri possono essere rilevati automaticamente da Total Validator Pro
+e vengono documentati a fini di completezza, ma non entrano nell'analisi
+comparativa.
+
+Un caso particolare è il criterio 1.1.1 (Contenuto non testuale): ciò che
+si valuta non è la qualità redazionale del testo alternativo — una scelta
+di contenuto identica nelle due versioni — bensì la presenza tecnica
+dell'attributo alt nel markup prodotto dal componente, che è invece
+framework-dipendente.
+
+Analogamente, per il criterio 1.4.1 (Uso del colore), ciò che si valuta
+non è la scelta cromatica del design, ma se gli stati interattivi comunicati
+visivamente attraverso il colore (ad esempio lo stato attivo di un chip-button,
+il giorno selezionato nel calendario, la lingua corrente nel selettore)
+siano ridondantemente comunicati anche a livello programmatico tramite
+attributi come aria-pressed, aria-selected e aria-current. Questa è una
+responsabilità che ricade sul codice del componente e dipende dal modo
+in cui il framework è stato utilizzato.
+
+I criteri di successo inclusi nella valutazione manuale comparativa sono
+pertanto i seguenti, organizzati per principio WCAG:
+
+  Principio 1 — Percepibilità:
+    1.1.1  Contenuto non testuale (Livello A) — aspetto tecnico
+           Verificato: presenza dell'attributo alt sulle immagini prodotte
+           dal componente (carosello, logo, card della collezione, lightbox,
+           mappa embed).
+    1.3.1  Informazioni e relazioni (Livello A)
+           Verificato: utilizzo di elementi semantici corretti (nav, button,
+           table con caption e scope, fieldset/legend); associazione
+           programmatica tra controlli e etichette nei moduli; ruoli
+           strutturali dei componenti di navigazione e contenuto.
+    1.4.1  Uso del colore (Livello A) — aspetto tecnico
+           Verificato: ridondanza programmatica degli stati comunicati
+           visivamente via colore (aria-pressed, aria-selected, aria-current)
+           nei componenti calendario, chip-button e selettore della lingua.
+
+  Principio 2 — Operabilità:
+    2.1.1  Tastiera (Livello A)
+           Verificato: tutti gli elementi interattivi di ciascun componente
+           sono raggiungibili e attivabili tramite Tab, Invio e Spazio.
+    2.1.2  Nessuna trappola per la tastiera (Livello A)
+           Verificato: lightbox, toast popup, banner, carosello — il focus
+           non rimane intrappolato in modo non intenzionale; se il componente
+           gestisce un focus trap deliberato (overlay), deve essere possibile
+           uscirne tramite Escape.
+    2.4.3  Ordine del focus (Livello A)
+           Verificato: la sequenza di navigazione da tastiera riflette
+           l'ordine visivo e logico del componente; l'apertura di overlay
+           sposta il focus al contenuto aperto e la chiusura lo riporta
+           all'elemento attivante.
+    2.4.7  Focus visibile (Livello AA)
+           Verificato: l'indicatore di focus non è soppresso dal CSS
+           del componente; tutti gli elementi interattivi mostrano un
+           indicatore visibile quando ricevono il focus da tastiera.
+    2.4.11 Focus non oscurato (minimo) (Livello AA)
+           Verificato: l'elemento che ha il focus non è completamente
+           nascosto dall'header sticky o da overlay sovrapposti.
+
+  Principio 3 — Comprensibilità:
+    3.3.1  Identificazione degli errori (Livello A)
+           Verificato: i messaggi di errore nei moduli di prenotazione
+           e di contatto sono associati programmaticamente al campo
+           in errore (aria-describedby o aria-errormessage) e sono
+           annunciati dinamicamente.
+    3.3.2  Etichette o istruzioni (Livello A)
+           Verificato: ciascun campo dei moduli è associato a un'etichetta
+           tramite la coppia for/id o aria-labelledby, non tramite elementi
+           non semantici come span.
+
+  Principio 4 — Robustezza:
+    4.1.2  Nome, ruolo, valore (Livello A)
+           Verificato: i componenti interattivi custom (hamburger, pulsanti
+           freccia del carosello, toggle switch, chip-button, controlli del
+           calendario, selettore della lingua, pulsante di chiusura del banner
+           e della lightbox) espongono un nome accessibile, un ruolo corretto
+           e il proprio stato tramite attributi ARIA.
+    4.1.3  Messaggi di stato (Livello AA)
+           Verificato: i messaggi di stato dinamici (feedback del carosello,
+           notifica del banner, toast del modulo di prenotazione, messaggi
+           di errore dei moduli) sono comunicati tramite regioni aria-live
+           senza richiedere lo spostamento del focus.
+
+Protocollo di ispezione
+
+Per ciascun componente e ciascun criterio di successo applicabile,
+il valutatore segue un protocollo in quattro passi. Nel primo passo,
+il componente è ispezionato visivamente nel browser per verificare
+il comportamento visivo atteso. Nel secondo passo, il DOM renderizzato
+è ispezionato tramite gli strumenti per sviluppatori del browser
+(Chrome DevTools) per verificare la struttura semantica, la presenza
+degli attributi ARIA corretti, le relazioni tra elementi (for/id, aria-labelledby,
+aria-describedby, aria-controls, aria-expanded) e il ruolo esposto
+nell'albero di accessibilità. Nel terzo passo, il componente è navigato
+interamente tramite tastiera, verificando l'ordine del focus, la visibilità
+dell'indicatore di focus, la raggiungibilità di tutti gli elementi interattivi
+e il comportamento delle scorciatoie da tastiera attese. Nel quarto passo,
+il risultato dell'ispezione per ciascun criterio è registrato come uno dei
+seguenti esiti: conforme, non conforme, non applicabile.
+
+Ogni non conformità viene documentata con: il criterio di successo violato,
+il livello di conformità (A o AA), una descrizione tecnica del problema
+riscontrato (con riferimento all'elemento del DOM coinvolto), la natura
+del gap (assenza di attributo, semantica errata, comportamento da tastiera
+mancante, annuncio dinamico assente, ecc.) e una valutazione della
+gravità rispetto all'esperienza dell'utente con tecnologia assistiva.
+
+3.5.3  Test con tecnologie assistive (NVDA, VoiceOver)
+
+Il test con tecnologie assistive costituisce il terzo livello del processo
+di valutazione e ha lo scopo di verificare come ciascun componente
+viene effettivamente percepito e operato da un utente che non dispone
+del canale visivo. Questo livello di test va oltre la verifica della
+correttezza strutturale del markup — che è l'oggetto dell'ispezione
+manuale — e si concentra sull'esperienza complessiva di navigazione
+e interazione attraverso uno screen reader.
+
+Screen reader utilizzati
+
+I test vengono condotti con due screen reader:
+
+  NVDA (NonVisual Desktop Access), versione 2025.1, in combinazione
+  con il browser Google Chrome nella versione stabile più recente,
+  su sistema operativo Windows 11. NVDA è uno screen reader open
+  source tra i più diffusi al mondo, ampiamente utilizzato nella
+  ricerca sull'accessibilità come punto di riferimento per la
+  valutazione della compatibilità dei siti web con le tecnologie
+  assistive. La combinazione NVDA + Chrome è considerata dalla
+  letteratura e dai report di utilizzo come una delle coppie
+  screen reader–browser più rappresentative del contesto reale
+  d'uso. (da sistemare)
+
+  VoiceOver, il screen reader integrato in macOS, in combinazione
+  con il browser Safari, su sistema operativo macOS Sequoia 15.
+  VoiceOver è incluso in questo studio per verificare l'assenza
+  di comportamenti specifici alla piattaforma Apple che potrebbero
+  influenzare l'esperienza di accessibilità indipendentemente
+  dalle scelte implementative del framework. Alcune differenze
+  nel modo in cui Safari e Chrome interpretano l'albero di
+  accessibilità sono note in letteratura e possono produrre
+  risultati diversi per lo stesso markup. (da sistemare)
+
+Scenari di test
+
+Per ciascuno dei dieci componenti selezionati, il test con screen reader
+segue un insieme di scenari operativi definiti a priori, che riproducono
+i casi d'uso principali di un utente che naviga il sito esclusivamente
+tramite tastiera e screen reader. Gli scenari includono:
+
+  —   Navigazione sequenziale tramite Tab e Shift+Tab attraverso
+      tutti gli elementi interattivi del componente, con verifica
+      di ciò che viene annunciato dallo screen reader per ciascun
+      elemento (nome accessibile, ruolo, stato).
+
+  —   Attivazione degli elementi interattivi tramite Invio e Spazio,
+      con verifica del comportamento conseguente e degli annunci
+      prodotti (cambio di stato, apertura di overlay, aggiornamento
+      del contenuto).
+
+  —   Per i componenti che gestiscono il focus (overlay, dialoghi,
+      menu): verifica che il focus si sposti correttamente all'apertura,
+      che non sia possibile raggiunger elementi al di fuori del
+      componente attivo quando questo è aperto (focus trap), e
+      che il focus ritorni all'elemento attivante alla chiusura.
+
+  —   Per i componenti con aggiornamenti dinamici del contenuto
+      (banner, carosello, calendario, feedback dei moduli): verifica
+      che le modifiche rilevanti vengano annunciate dallo screen
+      reader senza richiedere all'utente di navigare manualmente
+      verso l'area aggiornata.
+
+  —   Per i moduli: navigazione tra i campi tramite Tab, lettura
+      delle etichette associate a ciascun campo, comprensione
+      del tipo di input richiesto, lettura dei messaggi di errore
+      dopo il tentativo di invio con dati non validi.
+
+Registrazione dei risultati
+
+I risultati del test con screen reader vengono registrati per ciascun
+componente e ciascun scenario sotto forma di osservazioni qualitative,
+che documentano: il nome e il ruolo annunciati dallo screen reader per
+ciascun elemento interattivo, le informazioni di stato comunicate (o non
+comunicate) al momento dell'interazione, i problemi di focus riscontrati,
+e qualsiasi comportamento inatteso o confuso dal punto di vista
+dell'esperienza di navigazione. Quando il comportamento differisce tra
+NVDA e VoiceOver, la differenza viene esplicitata e commentata.
+
+I risultati del test con screen reader non sono sintetizzati in un punteggio
+numerico, ma vengono utilizzati come evidenza qualitativa complementare
+ai risultati della valutazione automatizzata e dell'ispezione manuale.
+In particolare, il test con screen reader è determinante per giudicare
+la gravità effettiva di una non conformità: una violazione che risulta
+formalmente non conforme all'ispezione manuale ma non produce
+alcun disagio pratico nella navigazione con screen reader è valutata
+diversamente da una violazione che rende un componente completamente
+inutilizzabile per un utente non vedente.
+
+3.5.4  Procedura di valutazione: baseline → remediation → ri-valutazione
+
+Il processo di valutazione è organizzato in tre fasi temporali distinte
+e sequenziali. Questa struttura a tre fasi è la diretta operativizzazione
+delle domande di ricerca RQ1, RQ2 e RQ3 enunciate nella Sezione 1.8,
+e costituisce il filo conduttore dell'intero Capitolo 4.
+
+Fase 1 — Valutazione baseline
+
+Nella prima fase, entrambe le implementazioni — Angular e React —
+vengono valutate nel loro stato iniziale, ovvero nella versione prodotta
+dallo sviluppatore senza alcuna modifica deliberata orientata all'accessibilità.
+Questa condizione corrisponde a ciò che uno sviluppatore produrrebbe
+ragionevolmente nella pratica quando costruisce un sito funzionante
+senza un'attenzione specifica all'accessibilità durante lo sviluppo.
+
+Per ciascuna implementazione e ciascuno dei dieci componenti selezionati,
+vengono applicati tutti e tre i livelli di valutazione descritti nelle sezioni
+precedenti: scansione con Total Validator Pro su tutte le pagine, ispezione
+manuale secondo i criteri WCAG selezionati, e test con NVDA e VoiceOver
+secondo gli scenari definiti. I risultati vengono documentati in modo
+strutturato per componente, distinguendo i problemi rilevati tramite
+valutazione automatizzata da quelli emersi soltanto attraverso l'ispezione
+manuale o il test con screen reader.
+
+L'insieme dei risultati della fase baseline risponde direttamente a RQ1:
+"In che misura i componenti dell'interfaccia utente equivalenti sviluppati
+con React e Angular sono accessibili per impostazione predefinita?".
+
+Fase 2 — Remediation
+
+Nella seconda fase, i problemi di accessibilità identificati durante la
+baseline vengono affrontati in ciascuna implementazione. La remediation
+è condotta separatamente per Angular e per React, applicando le correzioni
+appropriate secondo le pratiche e gli strumenti offerti da ciascun framework.
+
+Le correzioni tipicamente adottate in questa fase includono: sostituzione
+degli elementi <span> con <label> correttamente associati tramite for
+e id nei moduli; aggiunta degli attributi ARIA mancanti sui componenti
+interattivi custom (aria-label, aria-expanded, aria-pressed, aria-selected,
+aria-disabled, role); implementazione del focus trap negli overlay e
+nei dialoghi, con trasferimento del focus all'apertura e ripristino
+all'elemento attivante alla chiusura; aggiunta di regioni aria-live per
+l'annuncio dei messaggi di feedback dinamico; aggiunta dell'attributo
+title agli iframe; aggiunta di scope alle celle di intestazione della
+tabella; e introduzione di aria-current per il link attivo nella navigazione.
+
+Per ciascuna correzione apportata viene registrato il tipo di modifica
+(attributo aggiunto, elemento sostituito, logica di focus implementata,
+ecc.), il numero approssimativo di righe di codice interessate, e il
+framework specifico in cui la modifica è stata realizzata. Queste
+informazioni costituiscono la base per la risposta a RQ3: "Quale overhead
+di sviluppo è richiesto per trasformare le implementazioni iniziali in
+versioni più accessibili in ciascuna tecnologia?".
+
+Fase 3 — Ri-valutazione
+
+Nella terza fase, l'intero processo di valutazione viene ripetuto sulle
+versioni remediate di entrambe le implementazioni. La scansione con
+Total Validator Pro viene eseguita nuovamente su tutte le pagine, producendo
+un secondo set di report che vengono confrontati con quelli della baseline
+per misurare la riduzione del numero di violazioni automaticamente
+rilevabili. L'ispezione manuale viene ripetuta per ciascun componente
+modificato, verificando che le correzioni apportate abbiano effettivamente
+risolto le non conformità identificate e che non abbiano introdotto
+nuove problematiche. Il test con screen reader viene ripetuto sugli
+scenari che nella baseline avevano prodotto osservazioni negative, per
+verificare il miglioramento dell'esperienza di navigazione.
+
+Il confronto tra i risultati della baseline e quelli della ri-valutazione
+risponde a RQ2: "Quando vengono identificati problemi di accessibilità,
+quanto è fattibile migliorare i componenti affinché soddisfino meglio
+i requisiti di accessibilità?". Il confronto tra le correzioni apportate
+nelle due implementazioni — in termini di tipologia delle modifiche,
+complessità e quantità di codice coinvolto — risponde a RQ3.
+
+

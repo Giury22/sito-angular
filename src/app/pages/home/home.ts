@@ -15,7 +15,7 @@ const RECENSIONI = [
     id: 1,
     autore: 'Marco T.',
     stelle: 5,
-    data: 'Aprile 2026',
+    data: { mese: 4, anno: 2026 },
     testo_it:
       'Posto meraviglioso. I modelli esposti sono in condizioni perfette e le schede informative sono molto dettagliate. Tornerò sicuramente!',
     testo_en:
@@ -25,7 +25,7 @@ const RECENSIONI = [
     id: 2,
     autore: 'Sophie L.',
     stelle: 5,
-    data: 'Marzo 2026',
+    data: { mese: 3, anno: 2026 },
     testo_it:
       'Incredibile collezione. Anche se non sono una grande appassionata di moto, la storia di ogni modello mi ha affascinato.',
     testo_en:
@@ -35,7 +35,7 @@ const RECENSIONI = [
     id: 3,
     autore: 'Giulia R.',
     stelle: 4,
-    data: 'Febbraio 2026',
+    data: { mese: 2, anno: 2026 },
     testo_it:
       "Visita molto piacevole, ottima guida audio. Manca solo un piccolo bar o caffetteria all'interno.",
     testo_en:
@@ -71,6 +71,20 @@ export class Home {
   audioSrc = computed(() =>
     this.lang.currentLang() === 'it' ? 'home/tracciaAudio.mp3' : 'home/tracciAudioEN.mp3',
   );
+
+  private dataRecensioneFormatter = computed(
+    () =>
+      new Intl.DateTimeFormat(this.lang.currentLang() === 'it' ? 'it-IT' : 'en-US', {
+        month: 'long',
+        year: 'numeric',
+      }),
+  );
+
+  dataRecensione(data: { mese: number; anno: number }): string {
+    const dataFormattata = this.dataRecensioneFormatter().format(new Date(data.anno, data.mese - 1));
+
+    return dataFormattata.charAt(0).toUpperCase() + dataFormattata.slice(1);
+  }
 
   // Mostra/nasconde il player audio
   toggleAudio() {

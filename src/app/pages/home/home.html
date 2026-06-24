@@ -96,7 +96,7 @@
           }
         </div>
         <p class="home-rec-testo">"{{ lang.currentLang() === 'it' ? r.testo_it : r.testo_en }}"</p>
-        <p class="home-rec-autore">— {{ r.autore }}, {{ r.data }}</p>
+        <p class="home-rec-autore">— {{ r.autore }}, {{ dataRecensione(r.data) }}</p>
       </div>
     }
   </div>
